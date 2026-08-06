@@ -59,20 +59,21 @@ collapses it to a spine and gives the width back to the page. The choice is reme
 `localStorage` across pages. Below 900 px the rail slides over the page instead, with a scrim.
 Reading progress runs down the rail's right edge.
 
-Serif and sans alternate rather than splitting by heading versus body: the headline sets Didot
-against uppercase Helvetica word by word, the standfirst is serif where the body is sans, the rail's
-group heads are serif italic over sans links, and the asides in the essays answer their serif
-surroundings in sans.
+Two sans faces carry the whole site: Futura sets every headline, the rail's group heads and the
+index, while Helvetica Neue Light handles running text and answers Futura word by word inside the
+headline itself. Display type is uppercase and tracked rather than relying on thick-thin contrast.
 
 ## Motion
 
-Hover: images lift and warm up while their neighbours recede, captions slide in, nav labels
-scramble and resolve, index rows shift with a preview thumbnail that tracks the pointer, cards lean
-toward the cursor. Scrolling drives a progress hairline, clip-path reveals, a hero parallax, and a
-marquee whose speed and direction follow the scroll. A soft light follows the pointer across the
-page. Collage images can be dragged around and stay where they are put; the pointer stays the
-system cursor throughout, and native cursors carry the affordance (grab over a collage, zoom over a
-gallery frame).
+Hover: an image lifts off the paper on a soft cast shadow and drifts, each frame in its own way
+(a slow sway, a shiver, a pendulum, a bob), while its neighbours recede and its caption slides in.
+Nav labels scramble and resolve, index rows shift with a preview thumbnail that tracks the pointer,
+cards lean toward the cursor. Scrolling drives the rail's progress line, clip-path reveals and a
+hero parallax. A soft light follows the pointer across the page.
+
+Rotation, lift and wiggle are driven through the separate `rotate`, `translate` and `scale`
+properties rather than one `transform`, so a resting tilt, a hover lift and a looping animation
+can coexist without overwriting each other.
 
 Two things are hidden: the diamond beside the wordmark tips every framed image off its axis and
 back, and typing `lava` warms the page.

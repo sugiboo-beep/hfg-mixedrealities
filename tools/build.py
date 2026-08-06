@@ -312,7 +312,7 @@ class SiteBuilder:
                 f'--w:{item["w"]};--z:{item["z"]};--tilt:{item["tilt"]}deg"'
             )
             tiles.append(
-                self.tile(page, item["hash"], gallery, captions.get(item["hash"]), style, " data-drag")
+                self.tile(page, item["hash"], gallery, captions.get(item["hash"]), style)
             )
         return (
             f'<div class="collage" style="--ff-h:{placement.height:.2f}" data-collage>\n'
@@ -355,9 +355,6 @@ class SiteBuilder:
         headline = " ".join(
             f'<span class="word {faces.get(w, "")}">{esc(w)}</span>' for w in meta["title"].split()
         )
-        marquee = "".join(
-            f'<span>{esc(p["title"])}</span><span class="sep">&#9670;</span>' for p in self.site["projects"]
-        )
         cards = "\n".join(
             f"""<a class="card-work reveal" href="{page.url('works/' + w['slug'] + '.html')}" data-tilt>
   <span class="frame"><img src="{page.url(self.media.thumb(w['cover']))}" alt="{esc(w['title'])}" loading="lazy"></span>
@@ -383,10 +380,8 @@ class SiteBuilder:
     <p class="scroll-hint reveal"><span>Scroll</span></p>
   </section>
 
-  <div class="marquee reveal"><div class="marquee-track">{marquee}</div></div>
-
   <section class="shell band">
-    {self.label('Selected works', 'Drag anything')}
+    {self.label('Selected works', 'Archive')}
     {self.collage(page, 'home-page', 'home', lanes=3)}
     <p class="more reveal"><a class="link-inline" href="{page.url('gallery.html')}">Enter the full image archive &#8594;</a></p>
   </section>

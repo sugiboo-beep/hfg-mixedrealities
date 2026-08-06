@@ -77,9 +77,6 @@
   function ScrollChrome() {
     this.bar = document.querySelector(".rail-progress span");
     this.top = document.querySelector(".to-top");
-    this.last = window.scrollY;
-    this.velocity = 0;
-    this.direction = 1;
 
     var self = this;
     window.addEventListener("scroll", function () {
@@ -99,10 +96,6 @@
   ScrollChrome.prototype.update = function () {
     var y = window.scrollY || 0;
     var span = document.documentElement.scrollHeight - window.innerHeight;
-    var delta = y - this.last;
-    this.last = y;
-    this.velocity = Math.min(Math.abs(delta), 90);
-    if (delta !== 0) this.direction = delta > 0 ? 1 : -1;
 
     if (this.bar) this.bar.style.height = (span > 0 ? (y / span) * 100 : 0) + "%";
     if (this.top) this.top.classList.toggle("is-on", y > window.innerHeight * 0.8);
@@ -279,25 +272,6 @@
     });
   }
 
-  /** Marquee whose speed and direction follow the scroll. */
-  function Marquee(chrome) {
-    this.track = document.querySelector(".marquee-track");
-    this.chrome = chrome;
-    this.offset = 0;
-    if (!this.track) return;
-    this.track.innerHTML += this.track.innerHTML;
-    this.half = this.track.scrollWidth / 2;
-  }
-
-  Marquee.prototype.frame = function () {
-    if (!this.track || CALM) return;
-    var speed = 0.35 + this.chrome.velocity * 0.06;
-    this.offset -= speed * this.chrome.direction;
-    if (this.offset <= -this.half) this.offset += this.half;
-    if (this.offset > 0) this.offset -= this.half;
-    this.track.style.transform = "translate3d(" + this.offset.toFixed(2) + "px,0,0)";
-  };
-
   /** The hero headline lags slightly behind the scroll. */
   function Parallax() {
     this.items = document.querySelectorAll("[data-parallax]");
@@ -311,88 +285,6 @@
       el.style.transform = "translate3d(0," + (-y * rate).toFixed(2) + "px,0)";
     });
   };
-
-  /* ---------------------------------------------------------- collages */
-
-  /** Collage tiles can be pushed around; a real drag suppresses the lightbox. */
-  function Drag() {
-    var tiles = document.querySelectorAll("[data-drag]");
-    if (!tiles.length) return;
-
-    var stack = 80;
-    var held = null;
-    var start = { x: 0, y: 0 };
-    var base = { x: 0, y: 0 };
-    var moved = false;
-
-    function point(event) {
-      var touch = event.touches && event.touches[0];
-      return touch ? { x: touch.clientX, y: touch.clientY } : { x: event.clientX, y: event.clientY };
-    }
-
-    function begin(tile, event) {
-      if (event.button !== undefined && event.button !== 0) return;
-      held = tile;
-      start = point(event);
-      base = {
-        x: parseFloat(tile.style.getPropertyValue("--dx")) || 0,
-        y: parseFloat(tile.style.getPropertyValue("--dy")) || 0
-      };
-      moved = false;
-      /* Stops the browser starting its own link-and-image drag, which swallows the gesture. */
-      event.preventDefault();
-    }
-
-    function track(event) {
-      if (!held) return;
-      var at = point(event);
-      var dx = at.x - start.x;
-      var dy = at.y - start.y;
-
-      if (!moved) {
-        if (Math.abs(dx) + Math.abs(dy) < 4) return;
-        moved = true;
-        held.classList.add("is-dragging");
-        held.style.zIndex = String(++stack);
-      }
-      event.preventDefault();
-      held.style.setProperty("--dx", (base.x + dx).toFixed(1) + "px");
-      held.style.setProperty("--dy", (base.y + dy).toFixed(1) + "px");
-    }
-
-    function release() {
-      if (!held) return;
-      held.classList.remove("is-dragging");
-      held = null;
-    }
-
-    Array.prototype.forEach.call(tiles, function (tile) {
-      tile.addEventListener("dragstart", function (event) {
-        event.preventDefault();
-      });
-      tile.addEventListener("mousedown", function (event) {
-        begin(tile, event);
-      });
-      tile.addEventListener("touchstart", function (event) {
-        begin(tile, event);
-      }, { passive: false });
-
-      /* A press that turned into a drag must not also open the lightbox. */
-      tile.addEventListener("click", function (event) {
-        if (!moved) return;
-        event.preventDefault();
-        event.stopPropagation();
-        moved = false;
-      }, true);
-    });
-
-    /* Tracking on the document, so the drag survives the pointer leaving the tile. */
-    document.addEventListener("mousemove", track);
-    document.addEventListener("mouseup", release);
-    document.addEventListener("touchmove", track, { passive: false });
-    document.addEventListener("touchend", release);
-    document.addEventListener("touchcancel", release);
-  }
 
   /* --------------------------------------------- surprises and passage */
 
@@ -494,20 +386,19 @@
 
   function Site() {
     var toast = new Toast();
-    var chrome = new ScrollChrome();
+    new ScrollChrome();
 
     new Rail();
     new Reveal();
     new Peek();
     new Tilt();
     new Scramble();
-    new Drag();
     new Unsettle(toast);
     new Ember(toast);
     new Curtain();
     Lightbox();
 
-    this.frames = [new Spotlight(), new Magnet(), new Marquee(chrome), new Parallax()];
+    this.frames = [new Spotlight(), new Magnet(), new Parallax()];
     this.tick();
   }
 
