@@ -108,57 +108,21 @@
 
   /* -------------------------------------------------------- pointer fx */
 
-  /** Ring cursor whose label names whatever is under it, plus the paper spotlight. */
-  function Cursor() {
-    this.el = document.querySelector(".cursor");
-    this.label = document.querySelector(".cursor-label");
-    this.light = document.querySelector(".spotlight");
-    this.x = window.innerWidth / 2;
-    this.y = window.innerHeight / 2;
-    this.tx = this.x;
-    this.ty = this.y;
-    if (!this.el || !FINE || CALM) return;
+  /** Soft paper light that follows the pointer. */
+  function Spotlight() {
+    var light = document.querySelector(".spotlight");
+    if (!light || !FINE || CALM) return;
 
-    var self = this;
     window.addEventListener("pointermove", function (event) {
-      self.tx = event.clientX;
-      self.ty = event.clientY;
-      self.read(event.target);
-      if (self.light) {
-        self.light.classList.add("is-on");
-        self.light.style.setProperty("--mx", event.clientX + "px");
-        self.light.style.setProperty("--my", event.clientY + "px");
-      }
+      light.classList.add("is-on");
+      light.style.setProperty("--mx", event.clientX + "px");
+      light.style.setProperty("--my", event.clientY + "px");
     }, { passive: true });
 
     document.addEventListener("pointerleave", function () {
-      self.el.style.opacity = "0";
-      if (self.light) self.light.classList.remove("is-on");
-    });
-    document.addEventListener("pointerenter", function () {
-      self.el.style.opacity = "1";
+      light.classList.remove("is-on");
     });
   }
-
-  Cursor.prototype.read = function (target) {
-    var text = "";
-    if (target.closest) {
-      if (target.closest("[data-drag]")) text = "drag";
-      else if (target.closest(".tile")) text = "open";
-      else if (target.closest(".index-row, .card-work")) text = "view";
-      else if (target.closest('a[target="_blank"]')) text = "↗";
-      else if (target.closest("a, button")) text = "→";
-    }
-    this.el.classList.toggle("is-active", Boolean(text));
-    if (this.label && this.label.textContent !== text) this.label.textContent = text;
-  };
-
-  Cursor.prototype.frame = function () {
-    if (!this.el || !FINE || CALM) return;
-    this.x = lerp(this.x, this.tx, 0.22);
-    this.y = lerp(this.y, this.ty, 0.22);
-    this.el.style.transform = "translate3d(" + this.x + "px," + this.y + "px,0)";
-  };
 
   /** Elements that drift toward the pointer when it comes close. */
   function Magnet() {
@@ -328,15 +292,25 @@
       var base = { x: 0, y: 0 };
       var moved = false;
 
+      /* Without this the browser starts its own link-and-image drag and swallows the pointer. */
+      tile.addEventListener("dragstart", function (event) {
+        event.preventDefault();
+      });
+
       tile.addEventListener("pointerdown", function (event) {
         if (event.button !== 0) return;
+        event.preventDefault();
         start = { x: event.clientX, y: event.clientY };
         base = {
           x: parseFloat(tile.style.getPropertyValue("--dx")) || 0,
           y: parseFloat(tile.style.getPropertyValue("--dy")) || 0
         };
         moved = false;
-        tile.setPointerCapture(event.pointerId);
+        try {
+          tile.setPointerCapture(event.pointerId);
+        } catch (err) {
+          /* Capture is an optimisation; the drag still tracks without it. */
+        }
       });
 
       tile.addEventListener("pointermove", function (event) {
@@ -358,8 +332,12 @@
         if (!start) return;
         start = null;
         tile.classList.remove("is-dragging");
-        if (tile.hasPointerCapture && tile.hasPointerCapture(event.pointerId)) {
-          tile.releasePointerCapture(event.pointerId);
+        try {
+          if (tile.hasPointerCapture && tile.hasPointerCapture(event.pointerId)) {
+            tile.releasePointerCapture(event.pointerId);
+          }
+        } catch (err) {
+          /* Nothing to release. */
         }
       }
 
@@ -488,7 +466,7 @@
     new Curtain();
     Lightbox();
 
-    this.frames = [new Cursor(), new Magnet(), new Marquee(chrome), new Parallax()];
+    this.frames = [new Spotlight(), new Magnet(), new Marquee(chrome), new Parallax()];
     this.tick();
   }
 

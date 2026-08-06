@@ -275,7 +275,7 @@ class SiteBuilder:
         width, height = self.media.size(media_hash)
         return f"""<a class="tile glightbox reveal" href="{page.url(self.media.full(media_hash))}"
    data-gallery="{gallery}" data-title="{esc(cap)}"{style}{extra}>
-  <img src="{page.url(self.media.thumb(media_hash))}" alt="{esc(cap)}" loading="lazy" width="{width}" height="{height}">
+  <img src="{page.url(self.media.thumb(media_hash))}" alt="{esc(cap)}" loading="lazy" width="{width}" height="{height}" draggable="false">
   <span class="tile-cap">{esc(cap)}</span>
 </a>"""
 
@@ -612,7 +612,6 @@ TEMPLATE = """<!doctype html>
 {header}
 {body}
 {footer}
-<div class="cursor" aria-hidden="true"><span class="cursor-ring"></span><span class="cursor-label"></span></div>
 <div class="toast" role="status" aria-live="polite"></div>
 <script src="{glightbox_js}"></script>
 <script src="{js}"></script>

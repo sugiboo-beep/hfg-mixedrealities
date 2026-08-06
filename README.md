@@ -57,9 +57,10 @@ the whole arrangement scales with its column. Below 900 px it stacks into ordina
 Hover: images lift and warm up while their neighbours recede, captions slide in, nav labels
 scramble and resolve, index rows shift with a preview thumbnail that tracks the pointer, cards lean
 toward the cursor. Scrolling drives a progress hairline, clip-path reveals, a hero parallax, and a
-marquee whose speed and direction follow the scroll. A ring cursor names what is under it (open,
-drag, view). Collage images can be dragged around and stay where they are put. Navigating between
-pages plays an ink wipe.
+marquee whose speed and direction follow the scroll. A soft light follows the pointer across the
+page. Collage images can be dragged around and stay where they are put; the pointer stays the
+system cursor throughout, and native cursors carry the affordance (grab over a collage, zoom over a
+gallery frame).
 
 Two things are hidden: the diamond beside the wordmark tips every framed image off its axis and
 back, and typing `lava` warms the page.

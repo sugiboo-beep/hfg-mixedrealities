@@ -483,6 +483,7 @@ a {
 }
 
 .gallery .tile {
+  cursor: zoom-in;
   break-inside: avoid;
   margin-bottom: clamp(0.9rem, 1.6vw, 1.6rem);
 }
@@ -537,6 +538,19 @@ a {
 }
 
 /* Freeform collage: every coordinate is a percentage of the container's width. */
+.collage .tile {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+
+.collage .tile img {
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
 .collage {
   position: relative;
   padding-top: calc(var(--ff-h) * 1%);
@@ -556,6 +570,7 @@ a {
 
 .collage .tile.is-dragging {
   transition: none;
+  cursor: grabbing;
   box-shadow: 0 50px 90px -40px rgba(23, 4, 7, 0.85);
   opacity: 1;
   z-index: 80;
@@ -871,56 +886,6 @@ a {
   opacity: 1;
 }
 
-/* Custom cursor, shown only for a fine pointer. */
-.cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9500;
-  pointer-events: none;
-  display: none;
-}
-
-.cursor-ring {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 2.2rem;
-  height: 2.2rem;
-  margin: -1.1rem 0 0 -1.1rem;
-  border: 1px solid var(--ink);
-  border-radius: 50%;
-  transition: width 0.4s var(--spring), height 0.4s var(--spring),
-    margin 0.4s var(--spring), background-color 0.4s var(--ease), border-color 0.4s var(--ease);
-}
-
-.cursor-label {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: translate(-50%, -50%);
-  font-family: var(--mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--paper);
-  opacity: 0;
-  transition: opacity 0.3s var(--ease);
-  white-space: nowrap;
-}
-
-.cursor.is-active .cursor-ring {
-  width: 5rem;
-  height: 5rem;
-  margin: -2.5rem 0 0 -2.5rem;
-  background: var(--red);
-  border-color: var(--red);
-}
-
-.cursor.is-active .cursor-label {
-  opacity: 1;
-}
-
 /* Wipe that covers the page while the next one loads. */
 .curtain {
   position: fixed;
@@ -1040,20 +1005,6 @@ a {
 
 /* --------------------------------------------------------- responsive */
 
-@media (pointer: fine) {
-  .has-js .cursor {
-    display: block;
-  }
-
-  .has-js body,
-  .has-js a,
-  .has-js button,
-  .has-js .tile,
-  .has-js .index-row {
-    cursor: none;
-  }
-}
-
 @media (max-width: 1100px) {
   .c-5, .c-6, .c-7, .c-8 { grid-column: span 6; }
   .c-centre { grid-column: 2 / span 10; }
@@ -1130,7 +1081,6 @@ a {
   }
 
   .peek,
-  .cursor,
   .spotlight {
     display: none;
   }
@@ -1173,7 +1123,6 @@ a {
     clip-path: none;
   }
 
-  .cursor,
   .spotlight,
   .curtain {
     display: none;
