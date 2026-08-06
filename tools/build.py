@@ -410,8 +410,7 @@ class SiteBuilder:
     {self.label('Projects', f"{len(self.site['projects'])} entries")}
     {self.project_index(page)}
   </section>
-</main>
-<div class="peek"><img src="" alt=""></div>"""
+</main>"""
         page.write(body)
 
     def project_index(self, page: Page) -> str:
@@ -421,10 +420,8 @@ class SiteBuilder:
             raw = blocks[1]["lines"][0] if len(blocks) > 1 else ""
             blurb = esc(raw[:150].rsplit(" ", 1)[0]) + "&#8230;" if len(raw) > 150 else esc(raw)
             subtitle = f'<em>{esc(project["subtitle"])}</em>' if project.get("subtitle") else ""
-            cover = project.get("cover")
-            peek = page.url(self.media.thumb(cover)) if cover in self.media else ""
             rows.append(
-                f"""<a class="index-row reveal" href="{page.url('projects/' + project['slug'] + '.html')}" data-peek="{peek}">
+                f"""<a class="index-row reveal" href="{page.url('projects/' + project['slug'] + '.html')}">
   <span class="num">{i:02d}</span>
   <span class="name"><span data-scramble>{esc(project['title'])}</span>{subtitle}</span>
   <span class="blurb">{blurb}</span>
@@ -444,8 +441,7 @@ class SiteBuilder:
     <p class="lede reveal">Seminars and collaborations developed with museums, archives and cultural institutions, each ending in an exhibition, a publication or a field trip.</p>
   </section>
   <section class="shell band">{self.project_index(page)}</section>
-</main>
-<div class="peek"><img src="" alt=""></div>"""
+</main>"""
         page.write(body)
 
     #: Section hues, cycled so neighbouring projects never share one.

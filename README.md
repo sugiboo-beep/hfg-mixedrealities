@@ -84,8 +84,7 @@ headline itself. Display type is uppercase and tracked rather than relying on th
 
 Hover: an image lifts off the paper on a soft cast shadow and drifts, each frame in its own way
 (a slow sway, a shiver, a pendulum, a bob), while its neighbours recede and its caption slides in.
-Nav labels scramble and resolve, index rows shift with a preview thumbnail that tracks the pointer,
-cards lean toward the cursor. Scrolling drives the rail's progress line, clip-path reveals and a
+Nav labels scramble and resolve, index rows shift and colour, cards lean toward the cursor. Scrolling drives the rail's progress line, clip-path reveals and a
 hero parallax. A soft light follows the pointer across the page.
 
 Rotation, lift and wiggle are driven through the separate `rotate`, `translate` and `scale`

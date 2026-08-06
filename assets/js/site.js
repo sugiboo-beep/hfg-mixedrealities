@@ -183,39 +183,6 @@
     });
   };
 
-  /** Preview thumbnail that follows the pointer across an index list. */
-  function Peek() {
-    var peek = document.querySelector(".peek");
-    var rows = document.querySelectorAll(".index-row[data-peek]");
-    if (!peek || !rows.length || CALM || !FINE) return;
-
-    var img = peek.querySelector("img");
-    var pending = null;
-
-    function move(event) {
-      if (pending) return;
-      pending = requestAnimationFrame(function () {
-        peek.style.left = event.clientX + "px";
-        peek.style.top = event.clientY + "px";
-        pending = null;
-      });
-    }
-
-    rows.forEach(function (row) {
-      var src = row.getAttribute("data-peek");
-      if (!src) return;
-      row.addEventListener("pointerenter", function (event) {
-        img.src = src;
-        peek.classList.add("is-on");
-        move(event);
-      });
-      row.addEventListener("pointermove", move);
-      row.addEventListener("pointerleave", function () {
-        peek.classList.remove("is-on");
-      });
-    });
-  }
-
   /** Cards lean toward the pointer. */
   function Tilt() {
     if (CALM || !FINE) return;
@@ -391,7 +358,6 @@
 
     new Rail();
     new Reveal();
-    new Peek();
     new Tilt();
     new Scramble();
     new Unsettle(toast);

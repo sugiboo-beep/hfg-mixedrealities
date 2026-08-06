@@ -822,30 +822,6 @@ a.group-head:hover {
   transform: translateX(0);
 }
 
-/* Preview thumbnail that tracks the pointer across an index. */
-.peek {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 21rem;
-  pointer-events: none;
-  opacity: 0;
-  z-index: 900;
-  transform: translate(-50%, -50%) scale(0.9) rotate(-5deg);
-  transition: opacity 0.35s var(--ease), transform 0.55s var(--spring);
-  box-shadow: 0 42px 84px -40px rgba(23, 4, 7, 0.8);
-}
-
-.peek.is-on {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1) rotate(-2.5deg);
-}
-
-.peek img {
-  display: block;
-  width: 100%;
-}
-
 /* ---------------------------------------------------------------- card */
 
 .card-work {
@@ -1247,7 +1223,6 @@ a.group-head:hover {
     display: none;
   }
 
-  .peek,
   .spotlight {
     display: none;
   }

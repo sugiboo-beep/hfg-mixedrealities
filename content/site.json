@@ -115,7 +115,6 @@
    "source": "the-floor-is-lava_1",
    "title": "The Floor is Lava",
    "kicker": "Seminar in collaboration with UMBAU",
-   "cover": "G2952547870625868394354467949734",
    "works_source": "the-floor-is-lava_2",
    "works_intro": "Individual and collaborative contributions developed during the seminar and the field trip to Stromboli."
   },
@@ -123,45 +122,39 @@
    "slug": "frameworks-of-fiction",
    "source": "frameworks-of-fiction",
    "title": "Frameworks of Fiction",
-   "kicker": "Seminar with Kunsthalle Mannheim",
-   "cover": "K3053562891033849253707574168742"
+   "kicker": "Seminar with Kunsthalle Mannheim"
   },
   {
    "slug": "remember-the-future",
    "source": "remember-the-future-nsu-komplex-auflösen",
    "title": "Remember the Future",
    "subtitle": "NSU Komplex auflösen",
-   "kicker": "With Staatsarchiv Chemnitz, ASA FF and NSU – Offener Prozess",
-   "cover": null
+   "kicker": "With Staatsarchiv Chemnitz, ASA FF and NSU – Offener Prozess"
   },
   {
    "slug": "grand-hotel-waldlust",
    "source": "grand-hotel-waldlust",
    "title": "Grand Hotel Waldlust",
-   "kicker": "Seminar with Waldlust e.V., Freudenstadt",
-   "cover": null
+   "kicker": "Seminar with Waldlust e.V., Freudenstadt"
   },
   {
    "slug": "disruptive-worlding",
    "source": "disruptive-worlding",
    "title": "Disruptive Worlding",
-   "kicker": "Seminar by Charlotte Eifler with Ebba Fransén Walhör and Agnieszka Roguski",
-   "cover": null
+   "kicker": "Seminar by Charlotte Eifler with Ebba Fransén Walhör and Agnieszka Roguski"
   },
   {
    "slug": "hybrid-biennale-hellerau",
    "source": "hybrid-biennale-hellerau-theft-as-a-political-strategy",
    "title": "Hybrid Biennale Hellerau",
    "subtitle": "Theft as a political strategy",
-   "kicker": "With Artificial Museum and HELLERAU",
-   "cover": null
+   "kicker": "With Artificial Museum and HELLERAU"
   },
   {
    "slug": "diploma",
    "source": "diplomarbeit",
    "title": "Diploma",
-   "kicker": "Diploma projects",
-   "cover": null
+   "kicker": "Diploma projects"
   }
  ],
  "works": [
