@@ -6,6 +6,7 @@ Inputs are ``content/site.json`` (structure, navigation, curated captions), ``co
 framework dependency; layout comes from ``assets/css/site.css``.
 """
 
+import hashlib
 import html
 import json
 import shutil
@@ -153,16 +154,21 @@ class Page:
             return target
         return "../" * self.depth + target
 
+    def asset(self, target: str) -> str:
+        """As :meth:`url`, with a content fingerprint so a rebuilt asset is never served stale."""
+        digest = hashlib.md5((ROOT / target).read_bytes()).hexdigest()[:8]
+        return f"{self.url(target)}?v={digest}"
+
     def render(self, body: str) -> str:
         meta = self.builder.site["meta"]
         full_title = self.title if self.title == meta["title"] else f"{self.title} — {meta['title']}"
         return TEMPLATE.format(
             title=esc(full_title),
             description=esc(self.description),
-            css=self.url("assets/css/site.css"),
-            glightbox_css=self.url("assets/vendor/glightbox/glightbox.min.css"),
-            glightbox_js=self.url("assets/vendor/glightbox/glightbox.min.js"),
-            js=self.url("assets/js/site.js"),
+            css=self.asset("assets/css/site.css"),
+            glightbox_css=self.asset("assets/vendor/glightbox/glightbox.min.css"),
+            glightbox_js=self.asset("assets/vendor/glightbox/glightbox.min.js"),
+            js=self.asset("assets/js/site.js"),
             header=self.builder.header(self),
             body=body,
             footer=self.builder.footer(self),
