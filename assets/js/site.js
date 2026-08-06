@@ -239,7 +239,8 @@
   /** Letters of a label churn briefly before settling back. */
   function Scramble() {
     if (CALM) return;
-    var GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ/\\*+<>#";
+    /* Hangul syllables, so a label churns through Korean before settling into its own script. */
+    var GLYPHS = "가나다라마바사아자차카타파하거너더러머버서어저처커터퍼허고노도로모보소오조초코토포호";
 
     document.querySelectorAll("[data-scramble]").forEach(function (el) {
       var target = el.textContent;

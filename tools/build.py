@@ -141,11 +141,13 @@ class Collage:
 class Page:
     """One output HTML file, aware of its own depth below the site root."""
 
-    def __init__(self, builder: "SiteBuilder", path: str, title: str, description: str):
+    def __init__(self, builder: "SiteBuilder", path: str, title: str, description: str,
+                 accent: str = "green"):
         self.builder = builder
         self.path = path
         self.title = title
         self.description = description
+        self.accent = accent
         self.depth = path.count("/")
 
     def url(self, target: str) -> str:
@@ -163,8 +165,11 @@ class Page:
         meta = self.builder.site["meta"]
         full_title = self.title if self.title == meta["title"] else f"{self.title} — {meta['title']}"
         return TEMPLATE.format(
+            body_class=f"a-{self.accent}",
             title=esc(full_title),
             description=esc(self.description),
+            favicon=self.url("assets/img/meta/favicon.svg"),
+            thumbnail=self.url("assets/img/meta/thumbnail.png"),
             css=self.asset("assets/css/site.css"),
             glightbox_css=self.asset("assets/vendor/glightbox/glightbox.min.css"),
             glightbox_js=self.asset("assets/vendor/glightbox/glightbox.min.js"),
@@ -200,10 +205,14 @@ class SiteBuilder:
         for entry in self.site["nav"]:
             children = entry.get("children") or []
             label = esc(entry["label"])
+            gloss = self.kr(entry["label"])
             if entry.get("href"):
-                head = f'<a class="group-head" href="{page.url(entry["href"])}"><span data-scramble>{label}</span></a>'
+                head = (
+                    f'<a class="group-head" href="{page.url(entry["href"])}">'
+                    f'<span data-scramble>{label}</span>{gloss}</a>'
+                )
             else:
-                head = f'<span class="group-head">{label}</span>'
+                head = f'<span class="group-head">{label}{gloss}</span>'
             links = "".join(
                 f'<li><a class="link-sweep" href="{page.url(c["href"])}">{esc(c["label"])}</a></li>'
                 for c in children
@@ -329,9 +338,16 @@ class SiteBuilder:
     def placeholder(self) -> str:
         return f'<p class="note reveal">{esc(self.site["placeholder"])}</p>'
 
-    @staticmethod
-    def label(left: str, right: str = "") -> str:
-        return f'<div class="section-label reveal"><span>{left}</span><span>{right}</span></div>'
+    def kr(self, term: str) -> str:
+        """The Korean gloss for one of the site's own labels, if there is one."""
+        word = self.site.get("korean", {}).get(term)
+        return f'<span class="kr">{esc(word)}</span>' if word else ""
+
+    def label(self, left: str, right: str = "") -> str:
+        return (
+            f'<div class="section-label reveal"><span>{left}{self.kr(left)}</span>'
+            f'<span>{right}{self.kr(right)}</span></div>'
+        )
 
     # ------------------------------------------------------------- pages
 
@@ -368,11 +384,11 @@ class SiteBuilder:
         inst = meta["institution"]
         body = f"""<main>
   <section class="hero shell">
-    <p class="kicker reveal">{esc(meta['tagline'])} &#183; <a class="link-inline" href="{esc(inst['url'])}" target="_blank" rel="noopener">{esc(inst['label'])}</a></p>
+    <p class="kicker mark reveal">{esc(meta['tagline'])} &#183; <a class="link-inline" href="{esc(inst['url'])}" target="_blank" rel="noopener">{esc(inst['label'])}</a></p>
     <h1 data-parallax="0.12">{headline}</h1>
     <div class="hero-meta">
-      <span>Media Art</span><span class="dot">&#9670;</span>
-      <span>Karlsruhe</span><span class="dot">&#9670;</span>
+      <span>Media Art<span class="kr">{esc(meta.get('tagline_kr', ''))}</span></span><span class="dot">&#9670;</span>
+      <span>Karlsruhe<span class="kr">{esc(meta.get('place_kr', ''))}</span></span><span class="dot">&#9670;</span>
       <span>Seminars &amp; Field Work</span>
     </div>
     <p class="lede reveal">{esc(meta['intro'])}</p>
@@ -418,11 +434,13 @@ class SiteBuilder:
         return f'<div class="index-list">{"".join(rows)}</div>'
 
     def build_projects_index(self) -> None:
-        page = Page(self, "projects/index.html", "Projects", "Seminars, collaborations and field work of the lab.")
+        page = Page(self, "projects/index.html", "Projects",
+                    "Seminars, collaborations and field work of the lab.", "green")
         body = f"""<main>
   <section class="page-head shell">
-    <p class="kicker reveal">Index</p>
+    <p class="kicker mark reveal">Index{self.kr('Index')}</p>
     <h1 class="reveal">Projects</h1>
+    <p class="head-kr reveal">{self.kr('Projects')}</p>
     <p class="lede reveal">Seminars and collaborations developed with museums, archives and cultural institutions, each ending in an exhibition, a publication or a field trip.</p>
   </section>
   <section class="shell band">{self.project_index(page)}</section>
@@ -430,13 +448,20 @@ class SiteBuilder:
 <div class="peek"><img src="" alt=""></div>"""
         page.write(body)
 
+    #: Section hues, cycled so neighbouring projects never share one.
+    ACCENTS = ("green", "blue", "violet", "pink", "amber")
+
+    def accent_for(self, slug: str) -> str:
+        order = [p["slug"] for p in self.site["projects"]]
+        return self.ACCENTS[order.index(slug) % len(self.ACCENTS)] if slug in order else "green"
+
     def build_project(self, project: dict) -> None:
         source = project["source"]
         record = self.text.get(source, {})
         slug = project["slug"]
         blocks = record.get("blocks", [])
         summary = blocks[1]["lines"][0][:160] if len(blocks) > 1 else project["title"]
-        page = Page(self, f"projects/{slug}.html", project["title"], summary)
+        page = Page(self, f"projects/{slug}.html", project["title"], summary, self.accent_for(slug))
 
         images = [h for h in record.get("images", []) if h in self.media]
         subtitle = f'<em>{esc(project["subtitle"])}</em>' if project.get("subtitle") else ""
@@ -475,7 +500,7 @@ class SiteBuilder:
 
         body = f"""<main>
   <section class="page-head shell">
-    <p class="kicker reveal">{esc(project.get('kicker', 'Project'))}</p>
+    <p class="kicker mark reveal">{esc(project.get('kicker', 'Project'))}</p>
     <h1 class="reveal">{esc(project['title'])}{subtitle}</h1>
   </section>
   <section class="shell">
@@ -492,7 +517,8 @@ class SiteBuilder:
     def build_work(self, work: dict) -> None:
         source = work["source"]
         record = self.text.get(source, {})
-        page = Page(self, f"works/{work['slug']}.html", f"{work['title']} — {work['author']}", work["title"])
+        page = Page(self, f"works/{work['slug']}.html", f"{work['title']} — {work['author']}",
+                    work["title"], self.accent_for(work["project"]))
         images = [h for h in record.get("images", []) if h in self.media]
         parent = next(p for p in self.site["projects"] if p["slug"] == work["project"])
 
@@ -525,7 +551,9 @@ class SiteBuilder:
     def build_section(self, section: dict) -> None:
         source = section["source"]
         record = self.text.get(source, {})
-        page = Page(self, f"{section['slug']}.html", section["title"], f"{section['title']} — {section['group']}")
+        hues = {"Research": "blue", "People": "violet", "Events": "pink"}
+        page = Page(self, f"{section['slug']}.html", section["title"],
+                    f"{section['title']} — {section['group']}", hues.get(section["group"], "green"))
         images = [h for h in record.get("images", []) if h in self.media] or [
             h for h in self.library_for(source) if h in self.media
         ]
@@ -538,8 +566,9 @@ class SiteBuilder:
 
         body = f"""<main>
   <section class="page-head shell">
-    <p class="kicker reveal">{esc(section['group'])}</p>
+    <p class="kicker mark reveal">{esc(section['group'])}{self.kr(section['group'])}</p>
     <h1 class="reveal">{esc(section['title'])}</h1>
+    <p class="head-kr reveal">{self.kr(section['title'])}</p>
   </section>
   <section class="shell">
     <div class="cols">
@@ -552,7 +581,8 @@ class SiteBuilder:
         page.write(body)
 
     def build_gallery(self) -> None:
-        page = Page(self, "gallery.html", "Image archive", "Every image held by the lab's site, in one gallery.")
+        page = Page(self, "gallery.html", "Image archive",
+                    "Every image held by the lab's site, in one gallery.", "amber")
         seen, hashes = set(), []
         for record in self.library:
             for m in record["media"]:
@@ -562,8 +592,9 @@ class SiteBuilder:
 
         body = f"""<main>
   <section class="page-head shell">
-    <p class="kicker reveal">Archive</p>
+    <p class="kicker mark reveal">Archive{self.kr('Archive')}</p>
     <h1 class="reveal">Image archive</h1>
+    <p class="head-kr reveal">{self.kr('Archive')}</p>
     <p class="lede reveal">Every image held across the lab's pages, in one gallery. Select any frame to open it full size.</p>
   </section>
   <section class="shell band">
@@ -603,11 +634,18 @@ TEMPLATE = """<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
 <meta name="description" content="{description}">
+<link rel="icon" href="{favicon}" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{title}">
+<meta property="og:description" content="{description}">
+<meta property="og:image" content="{thumbnail}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#c8ff2e">
 <script>document.documentElement.className += " has-js";</script>
 <link rel="stylesheet" href="{glightbox_css}">
 <link rel="stylesheet" href="{css}">
 </head>
-<body>
+<body class="{body_class}">
 <div class="curtain" aria-hidden="true"><span class="curtain-mark">&#9670;</span></div>
 <div class="spotlight" aria-hidden="true"></div>
 {header}

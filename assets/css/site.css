@@ -3,18 +3,34 @@
 :root {
   --rail: 15.5rem;
   --rail-shut: 3.6rem;
-  --ink: #170407;
-  --ink-soft: #5b4a4c;
+  --ink: #140f10;
+  --ink-soft: #4f4448;
   --paper: #f3efe8;
   --paper-deep: #e7e0d4;
-  --red: #d61410;
-  --red-deep: #a70808;
-  --teal: #225d62;
-  --rule: rgba(23, 4, 7, 0.16);
 
-  --display: "Futura", "Avenir Next", "Century Gothic", "Jost", sans-serif;
-  --sans: "Helvetica Neue", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --mono: "SF Mono", ui-monospace, "IBM Plex Mono", "Courier New", monospace;
+  /* Neon green is the signature, but it sits at 1.03:1 on paper and 16.1:1 on ink, so it is only
+     ever a fill or a mark on a dark ground, never text on the page. */
+  --acid: #c8ff2e;
+
+  /* One hue per section, each measured at 4.2:1 or better against the paper. */
+  --green: #0a7d45;
+  --blue: #1f3ae0;
+  --violet: #7526bb;
+  --pink: #d40f68;
+  --amber: #b4560a;
+
+  /* Whatever the current page's section is; pages override it on the body. */
+  --accent: var(--green);
+  --rule: rgba(20, 15, 16, 0.16);
+
+  /* No webfonts are loaded, so every entry has to be a face that some platform actually installs.
+     Geometric first, then the nearest equivalent on Windows and Linux, then a generic family. */
+  --display: Futura, "Avenir Next", Avenir, "Century Gothic", "URW Gothic", "Twentieth Century",
+    system-ui, sans-serif;
+  --sans: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", Roboto, system-ui, sans-serif;
+  --mono: ui-monospace, Menlo, Consolas, "DejaVu Sans Mono", "Courier New", monospace;
+  --kr: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", "Nanum Gothic",
+    "AppleGothic", sans-serif;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -81,9 +97,60 @@ button {
 }
 
 ::selection {
-  background: var(--red);
-  color: var(--paper);
+  background: var(--acid);
+  color: var(--ink);
 }
+
+/* Korean glosses on the site's own labels. The archived prose is never touched. */
+.kr {
+  font-family: var(--kr);
+  font-weight: 400;
+  font-size: 0.78em;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--ink-soft);
+  margin-left: 0.55em;
+  opacity: 0.75;
+  transition: color 0.3s var(--ease), opacity 0.3s var(--ease);
+}
+
+a:hover > .kr,
+.nav-group:hover .kr {
+  color: var(--accent);
+  opacity: 1;
+}
+
+.group-head .kr {
+  display: block;
+  margin: 0.1rem 0 0;
+  font-size: 0.85em;
+}
+
+.head-kr {
+  font-family: var(--kr);
+  font-size: clamp(1rem, 1.5vw, 1.35rem);
+  color: var(--ink-soft);
+  margin: 0.9rem 0 0;
+}
+
+.head-kr .kr {
+  margin-left: 0;
+  font-size: 1em;
+}
+
+/* Each section of the site carries its own hue. */
+body.a-green { --accent: var(--green); }
+body.a-blue { --accent: var(--blue); }
+body.a-violet { --accent: var(--violet); }
+body.a-pink { --accent: var(--pink); }
+body.a-amber { --accent: var(--amber); }
+
+/* In the rail every group keeps its own hue regardless of the page being read. */
+.nav-group:nth-child(1) { --accent: var(--green); }
+.nav-group:nth-child(2) { --accent: var(--blue); }
+.nav-group:nth-child(3) { --accent: var(--violet); }
+.nav-group:nth-child(4) { --accent: var(--pink); }
+.nav-group:nth-child(5) { --accent: var(--amber); }
 
 /* ------------------------------------------------------------- layout */
 
@@ -126,8 +193,24 @@ h1, h2, h3 {
   font-size: 0.72rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--red-deep);
+  color: var(--accent);
   margin: 0 0 0.6rem;
+}
+
+/* Neon reads only against ink, so where it carries text it does so as a marked highlight. */
+.kicker.mark {
+  display: inline-block;
+  background: var(--acid);
+  color: var(--ink);
+  padding: 0.32em 0.7em 0.28em;
+  margin-bottom: 1rem;
+}
+
+.kicker.mark a,
+.kicker.mark .kr {
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--ink) 45%, transparent);
+  opacity: 1;
 }
 
 .lede {
@@ -152,8 +235,8 @@ h1, h2, h3 {
   font-size: 1.02rem;
   line-height: 1.5;
   letter-spacing: 0.01em;
-  color: var(--teal);
-  border-right: 2px solid var(--red);
+  color: var(--accent);
+  border-right: 2px solid var(--accent);
   padding-inline-end: 1.2rem;
 }
 
@@ -162,7 +245,7 @@ h1, h2, h3 {
   font-size: 0.82rem;
   line-height: 1.7;
   color: var(--ink-soft);
-  border-left: 2px solid var(--red);
+  border-left: 2px solid var(--accent);
   padding-left: 1.1rem;
   max-width: min(52ch, 100%);
 }
@@ -213,14 +296,14 @@ a {
 }
 
 .link-inline {
-  color: var(--red-deep);
-  border-bottom: 1px solid rgba(214, 20, 16, 0.4);
+  color: var(--accent);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
   transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
 }
 
 .link-inline:hover {
-  color: var(--red);
-  border-color: var(--red);
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 /* ---------------------------------------------------------------- rail */
@@ -293,7 +376,7 @@ a {
 
 .rail .wordmark:hover span:nth-child(even) {
   transform: translateX(0.35rem);
-  color: var(--red);
+  color: var(--accent);
 }
 
 .nav-closed .rail .wordmark {
@@ -322,7 +405,7 @@ a {
 }
 
 a.group-head:hover {
-  color: var(--red);
+  color: var(--accent);
 }
 
 .group-list li {
@@ -340,7 +423,7 @@ a.group-head:hover {
 }
 
 .group-list a:hover {
-  color: var(--red);
+  color: var(--accent);
   transform: translateX(6px);
 }
 
@@ -360,7 +443,7 @@ a.group-head:hover {
 .sigil {
   border: 0;
   background: transparent;
-  color: var(--red);
+  color: var(--accent);
   font-size: 0.8rem;
   line-height: 1;
   padding: 0.2rem 0.3rem;
@@ -373,7 +456,7 @@ a.group-head:hover {
 
 .sigil.is-on {
   transform: rotate(45deg) scale(1.2);
-  color: var(--teal);
+  color: var(--accent);
 }
 
 /* Reading progress runs down the rail's edge. */
@@ -389,7 +472,7 @@ a.group-head:hover {
   display: block;
   width: 100%;
   height: 0;
-  background: var(--red);
+  background: var(--acid);
   transition: height 0.12s linear;
 }
 
@@ -417,7 +500,7 @@ a.group-head:hover {
 }
 
 .rail-toggle:hover .bar {
-  background: var(--red);
+  background: var(--accent);
 }
 
 .rail-toggle .bar:first-child {
@@ -477,7 +560,7 @@ a.group-head:hover {
 }
 
 .hero h1 .accent {
-  color: var(--red);
+  color: var(--accent);
 }
 
 @keyframes rise {
@@ -500,7 +583,7 @@ a.group-head:hover {
 }
 
 .hero-meta .dot {
-  color: var(--red);
+  color: var(--accent);
 }
 
 .scroll-hint {
@@ -625,8 +708,8 @@ a.group-head:hover {
   font-size: 0.66rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: var(--paper);
-  background: linear-gradient(to top, rgba(23, 4, 7, 0.85), rgba(23, 4, 7, 0));
+  color: var(--acid);
+  background: linear-gradient(to top, rgba(20, 15, 16, 0.88), rgba(20, 15, 16, 0));
   transform: translateY(105%);
   transition: transform 0.5s var(--ease);
 }
@@ -714,24 +797,24 @@ a.group-head:hover {
 .index-row .go {
   justify-self: end;
   font-size: 1.4rem;
-  color: var(--red);
+  color: var(--accent);
   opacity: 0;
   transform: translateX(-1rem);
   transition: opacity 0.45s var(--ease), transform 0.5s var(--spring);
 }
 
 .index-row:hover {
-  background: rgba(214, 20, 16, 0.05);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
   padding-inline: 1.2rem;
 }
 
 .index-row:hover .name {
   transform: translateX(0.7rem);
-  color: var(--red-deep);
+  color: var(--accent);
 }
 
 .index-row:hover .num {
-  color: var(--red);
+  color: var(--accent);
 }
 
 .index-row:hover .go {
@@ -816,7 +899,7 @@ a.group-head:hover {
 }
 
 .card-work:hover .meta .name {
-  color: var(--red);
+  color: var(--accent);
 }
 
 /* ------------------------------------------------------------- article */
@@ -839,7 +922,7 @@ a.group-head:hover {
   font-weight: 300;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--teal);
+  color: var(--accent);
   margin-top: 0.9rem;
 }
 
@@ -868,12 +951,12 @@ a.group-head:hover {
 }
 
 .pager .prev:hover {
-  color: var(--red);
+  color: var(--accent);
   transform: translateX(-0.7rem);
 }
 
 .pager .next:hover {
-  color: var(--red);
+  color: var(--accent);
   transform: translateX(0.7rem);
 }
 
@@ -978,7 +1061,7 @@ a.group-head:hover {
 }
 
 .curtain-mark {
-  color: var(--red);
+  color: var(--acid);
   font-size: 1.4rem;
   opacity: 0.9;
 }
@@ -1009,7 +1092,7 @@ a.group-head:hover {
   transform: translate(-50%, 1.5rem);
   padding: 0.55rem 1.1rem;
   background: var(--ink);
-  color: var(--paper);
+  color: var(--acid);
   font-family: var(--mono);
   font-size: 0.64rem;
   letter-spacing: 0.16em;
@@ -1051,8 +1134,9 @@ a.group-head:hover {
 }
 
 .to-top:hover {
-  background: var(--red);
-  color: var(--paper);
+  background: var(--acid);
+  color: var(--ink);
+  border-color: var(--acid);
 }
 
 /* A brief heat wash over the page. */
@@ -1062,7 +1146,7 @@ a.group-head:hover {
   inset: 0;
   z-index: 8900;
   pointer-events: none;
-  background: radial-gradient(120% 80% at 50% 120%, rgba(214, 20, 16, 0.5), rgba(214, 20, 16, 0) 65%);
+  background: radial-gradient(120% 80% at 50% 120%, rgba(200, 255, 46, 0.75), rgba(200, 255, 46, 0) 65%);
   animation: heat 2.4s var(--ease) forwards;
 }
 
@@ -1181,7 +1265,7 @@ a.group-head:hover {
   .prose .aside {
     text-align: left;
     border-right: 0;
-    border-left: 2px solid var(--red);
+    border-left: 2px solid var(--accent);
     padding-inline: 1.1rem 0;
     margin-inline: 0;
   }

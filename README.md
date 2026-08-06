@@ -52,6 +52,23 @@ the result still reads as hand-placed, and every fifth image runs across two lan
 rhythm. Coordinates are percentages of the gallery's width, the same unit the source site used, so
 the whole arrangement scales with its column. Below 900 px it stacks into ordinary columns.
 
+## Colour
+
+Neon green `#c8ff2e` is the signature, but it measures 1.03:1 against the paper and 16.1:1 against
+the ink, so it is only ever a fill or a mark on a dark ground, never text on the page. Text accents
+come from five section hues, each measured at 4.2:1 or better against the paper: green `#0a7d45`
+for projects, blue `#1f3ae0` for research, violet `#7526bb` for people, pink `#d40f68` for events,
+amber `#b4560a` for the archive. Every project cycles through the five, so browsing changes colour.
+`tools/make_thumbnail.py` reads these values back out of the stylesheet, so the social card and
+favicon never drift from the site.
+
+## Korean
+
+The lab's contributors write in Korean and one of the essays turns on Korean words, so the site's
+own furniture carries a Korean gloss: the rail's groups, the section labels and the page heads. The
+glossary is `korean` in `content/site.json`. The archived prose itself is never touched. The
+hover-scramble effect churns through hangul syllables before settling into the label's own script.
+
 ## Navigation and type
 
 Navigation is a fixed rail down the left edge, grouped by section, with a toggle at the top that
