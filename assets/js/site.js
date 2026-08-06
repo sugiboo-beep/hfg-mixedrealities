@@ -13,36 +13,69 @@
 
   /* ------------------------------------------------------------- chrome */
 
-  function Nav() {
-    this.toggle = document.querySelector(".nav-toggle");
-    this.nav = document.querySelector(".nav-main");
-    if (!this.toggle || !this.nav) return;
+  /** The left rail: collapsible on wide screens, sliding over the page on narrow ones. */
+  function Rail() {
+    this.root = document.documentElement;
+    this.toggle = document.querySelector(".rail-toggle");
+    this.rail = document.querySelector(".rail");
+    this.scrim = document.querySelector(".rail-scrim");
+    if (!this.toggle || !this.rail) return;
 
     var self = this;
+    this.narrow = window.matchMedia("(max-width: 900px)");
+    this.apply(this.narrow.matches ? false : this.remembered());
+
     this.toggle.addEventListener("click", function () {
-      var open = self.nav.classList.toggle("is-open");
-      self.toggle.setAttribute("aria-expanded", String(open));
-      self.toggle.textContent = open ? "Close" : "Menu";
+      self.apply(!self.isOpen());
     });
-    this.nav.addEventListener("click", function (event) {
-      if (event.target.closest("a")) self.close();
+
+    if (this.scrim) {
+      this.scrim.removeAttribute("hidden");
+      this.scrim.addEventListener("click", function () {
+        self.apply(false);
+      });
+    }
+
+    this.rail.addEventListener("click", function (event) {
+      if (event.target.closest("a") && self.narrow.matches) self.apply(false);
     });
+
     document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") self.close();
+      if (event.key === "Escape" && self.narrow.matches) self.apply(false);
+    });
+
+    this.narrow.addEventListener("change", function (event) {
+      self.apply(event.matches ? false : self.remembered());
     });
   }
 
-  Nav.prototype.close = function () {
-    if (!this.nav) return;
-    this.nav.classList.remove("is-open");
-    this.toggle.setAttribute("aria-expanded", "false");
-    this.toggle.textContent = "Menu";
+  Rail.prototype.isOpen = function () {
+    return !this.root.classList.contains("nav-closed");
+  };
+
+  Rail.prototype.remembered = function () {
+    try {
+      return window.localStorage.getItem("rail") !== "closed";
+    } catch (err) {
+      return true;
+    }
+  };
+
+  Rail.prototype.apply = function (open) {
+    this.root.classList.toggle("nav-closed", !open);
+    this.root.classList.toggle("nav-open", open && this.narrow.matches);
+    this.toggle.setAttribute("aria-expanded", String(open));
+    if (this.narrow.matches) return;
+    try {
+      window.localStorage.setItem("rail", open ? "open" : "closed");
+    } catch (err) {
+      /* Private browsing; the rail simply opens by default next time. */
+    }
   };
 
   /** Sticky-header shadow, reading progress and the back-to-top button. */
   function ScrollChrome() {
-    this.head = document.querySelector(".site-head");
-    this.bar = document.querySelector(".progress-rail span");
+    this.bar = document.querySelector(".rail-progress span");
     this.top = document.querySelector(".to-top");
     this.last = window.scrollY;
     this.velocity = 0;
@@ -71,8 +104,7 @@
     this.velocity = Math.min(Math.abs(delta), 90);
     if (delta !== 0) this.direction = delta > 0 ? 1 : -1;
 
-    if (this.head) this.head.classList.toggle("is-stuck", y > 12);
-    if (this.bar) this.bar.style.width = (span > 0 ? (y / span) * 100 : 0) + "%";
+    if (this.bar) this.bar.style.height = (span > 0 ? (y / span) * 100 : 0) + "%";
     if (this.top) this.top.classList.toggle("is-on", y > window.innerHeight * 0.8);
   };
 
@@ -284,66 +316,68 @@
 
   /** Collage tiles can be pushed around; a real drag suppresses the lightbox. */
   function Drag() {
-    if (CALM) return;
-    var top = 80;
+    var tiles = document.querySelectorAll("[data-drag]");
+    if (!tiles.length) return;
 
-    document.querySelectorAll("[data-drag]").forEach(function (tile) {
-      var start = null;
-      var base = { x: 0, y: 0 };
-      var moved = false;
+    var stack = 80;
+    var held = null;
+    var start = { x: 0, y: 0 };
+    var base = { x: 0, y: 0 };
+    var moved = false;
 
-      /* Without this the browser starts its own link-and-image drag and swallows the pointer. */
+    function point(event) {
+      var touch = event.touches && event.touches[0];
+      return touch ? { x: touch.clientX, y: touch.clientY } : { x: event.clientX, y: event.clientY };
+    }
+
+    function begin(tile, event) {
+      if (event.button !== undefined && event.button !== 0) return;
+      held = tile;
+      start = point(event);
+      base = {
+        x: parseFloat(tile.style.getPropertyValue("--dx")) || 0,
+        y: parseFloat(tile.style.getPropertyValue("--dy")) || 0
+      };
+      moved = false;
+      /* Stops the browser starting its own link-and-image drag, which swallows the gesture. */
+      event.preventDefault();
+    }
+
+    function track(event) {
+      if (!held) return;
+      var at = point(event);
+      var dx = at.x - start.x;
+      var dy = at.y - start.y;
+
+      if (!moved) {
+        if (Math.abs(dx) + Math.abs(dy) < 4) return;
+        moved = true;
+        held.classList.add("is-dragging");
+        held.style.zIndex = String(++stack);
+      }
+      event.preventDefault();
+      held.style.setProperty("--dx", (base.x + dx).toFixed(1) + "px");
+      held.style.setProperty("--dy", (base.y + dy).toFixed(1) + "px");
+    }
+
+    function release() {
+      if (!held) return;
+      held.classList.remove("is-dragging");
+      held = null;
+    }
+
+    Array.prototype.forEach.call(tiles, function (tile) {
       tile.addEventListener("dragstart", function (event) {
         event.preventDefault();
       });
-
-      tile.addEventListener("pointerdown", function (event) {
-        if (event.button !== 0) return;
-        event.preventDefault();
-        start = { x: event.clientX, y: event.clientY };
-        base = {
-          x: parseFloat(tile.style.getPropertyValue("--dx")) || 0,
-          y: parseFloat(tile.style.getPropertyValue("--dy")) || 0
-        };
-        moved = false;
-        try {
-          tile.setPointerCapture(event.pointerId);
-        } catch (err) {
-          /* Capture is an optimisation; the drag still tracks without it. */
-        }
+      tile.addEventListener("mousedown", function (event) {
+        begin(tile, event);
       });
+      tile.addEventListener("touchstart", function (event) {
+        begin(tile, event);
+      }, { passive: false });
 
-      tile.addEventListener("pointermove", function (event) {
-        if (!start) return;
-        var dx = event.clientX - start.x;
-        var dy = event.clientY - start.y;
-        if (!moved && Math.hypot(dx, dy) > 4) {
-          moved = true;
-          tile.classList.add("is-dragging");
-          tile.style.zIndex = String(++top);
-        }
-        if (!moved) return;
-        event.preventDefault();
-        tile.style.setProperty("--dx", (base.x + dx).toFixed(1) + "px");
-        tile.style.setProperty("--dy", (base.y + dy).toFixed(1) + "px");
-      });
-
-      function end(event) {
-        if (!start) return;
-        start = null;
-        tile.classList.remove("is-dragging");
-        try {
-          if (tile.hasPointerCapture && tile.hasPointerCapture(event.pointerId)) {
-            tile.releasePointerCapture(event.pointerId);
-          }
-        } catch (err) {
-          /* Nothing to release. */
-        }
-      }
-
-      tile.addEventListener("pointerup", end);
-      tile.addEventListener("pointercancel", end);
-
+      /* A press that turned into a drag must not also open the lightbox. */
       tile.addEventListener("click", function (event) {
         if (!moved) return;
         event.preventDefault();
@@ -351,6 +385,13 @@
         moved = false;
       }, true);
     });
+
+    /* Tracking on the document, so the drag survives the pointer leaving the tile. */
+    document.addEventListener("mousemove", track);
+    document.addEventListener("mouseup", release);
+    document.addEventListener("touchmove", track, { passive: false });
+    document.addEventListener("touchend", release);
+    document.addEventListener("touchcancel", release);
   }
 
   /* --------------------------------------------- surprises and passage */
@@ -455,7 +496,7 @@
     var toast = new Toast();
     var chrome = new ScrollChrome();
 
-    new Nav();
+    new Rail();
     new Reveal();
     new Peek();
     new Tilt();

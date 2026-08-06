@@ -195,32 +195,40 @@ class SiteBuilder:
     # ------------------------------------------------------------ chrome
 
     def header(self, page: Page) -> str:
-        items = []
+        """The left rail: wordmark, grouped navigation and the page controls."""
+        groups = []
         for entry in self.site["nav"]:
-            label = f'<span data-scramble>{esc(entry["label"])}</span>'
             children = entry.get("children") or []
+            label = esc(entry["label"])
             if entry.get("href"):
-                head = f'<a class="link-sweep" href="{page.url(entry["href"])}">{label}</a>'
+                head = f'<a class="group-head" href="{page.url(entry["href"])}"><span data-scramble>{label}</span></a>'
             else:
-                head = f'<span class="link-sweep">{label}</span>'
-            drop = ""
-            if children:
-                links = "".join(
-                    f'<li><a href="{page.url(c["href"])}">{esc(c["label"])}</a></li>' for c in children
-                )
-                drop = f'<ul class="nav-drop">{links}</ul>'
-            items.append(f'<li class="nav-item">{head}{drop}</li>')
+                head = f'<span class="group-head">{label}</span>'
+            links = "".join(
+                f'<li><a class="link-sweep" href="{page.url(c["href"])}">{esc(c["label"])}</a></li>'
+                for c in children
+            )
+            sub = f'<ul class="group-list">{links}</ul>' if links else ""
+            groups.append(f'<li class="nav-group">{head}{sub}</li>')
 
         meta = self.site["meta"]
-        return f"""<header class="site-head">
-  <div class="shell inner">
-    <a class="wordmark" href="{page.url('index.html')}" data-magnet>{esc(meta['title'])}</a>
+        inst = meta["institution"]
+        words = meta["title"].split()
+        stack = "".join(f"<span>{esc(w)}</span>" for w in words)
+
+        return f"""<button class="rail-toggle" type="button" aria-expanded="true" aria-controls="rail" aria-label="Toggle navigation">
+  <span class="bar"></span><span class="bar"></span>
+</button>
+<aside class="rail" id="rail">
+  <a class="wordmark" href="{page.url('index.html')}">{stack}</a>
+  <nav class="rail-nav"><ul>{''.join(groups)}</ul></nav>
+  <div class="rail-foot">
+    <a class="link-sweep" href="{esc(inst['url'])}" target="_blank" rel="noopener">{esc(inst['label'])}</a>
     <button class="sigil" type="button" aria-label="Unsettle the page" title="Unsettle">&#9670;</button>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-main">Menu</button>
-    <nav id="nav-main"><ul class="nav-main">{''.join(items)}</ul></nav>
   </div>
-  <div class="progress-rail"><span></span></div>
-</header>"""
+  <div class="rail-progress"><span></span></div>
+</aside>
+<div class="rail-scrim" hidden></div>"""
 
     def footer(self, page: Page) -> str:
         meta = self.site["meta"]
@@ -343,10 +351,9 @@ class SiteBuilder:
         meta = self.site["meta"]
         page = Page(self, "index.html", meta["title"], meta["intro"])
 
-        words = meta["title"].split()
+        faces = meta.get("headline_faces", {})
         headline = " ".join(
-            f'<span class="word{" accent" if w.lower() in {"realities", "digitalities"} else ""}">{esc(w)}</span>'
-            for w in words
+            f'<span class="word {faces.get(w, "")}">{esc(w)}</span>' for w in meta["title"].split()
         )
         marquee = "".join(
             f'<span>{esc(p["title"])}</span><span class="sep">&#9670;</span>' for p in self.site["projects"]
@@ -610,8 +617,10 @@ TEMPLATE = """<!doctype html>
 <div class="curtain" aria-hidden="true"><span class="curtain-mark">&#9670;</span></div>
 <div class="spotlight" aria-hidden="true"></div>
 {header}
+<div class="page">
 {body}
 {footer}
+</div>
 <div class="toast" role="status" aria-live="polite"></div>
 <script src="{glightbox_js}"></script>
 <script src="{js}"></script>

@@ -52,6 +52,18 @@ the result still reads as hand-placed, and every fifth image runs across two lan
 rhythm. Coordinates are percentages of the gallery's width, the same unit the source site used, so
 the whole arrangement scales with its column. Below 900 px it stacks into ordinary columns.
 
+## Navigation and type
+
+Navigation is a fixed rail down the left edge, grouped by section, with a toggle at the top that
+collapses it to a spine and gives the width back to the page. The choice is remembered in
+`localStorage` across pages. Below 900 px the rail slides over the page instead, with a scrim.
+Reading progress runs down the rail's right edge.
+
+Serif and sans alternate rather than splitting by heading versus body: the headline sets Didot
+against uppercase Helvetica word by word, the standfirst is serif where the body is sans, the rail's
+group heads are serif italic over sans links, and the asides in the essays answer their serif
+surroundings in sans.
+
 ## Motion
 
 Hover: images lift and warm up while their neighbours recede, captions slide in, nav labels
