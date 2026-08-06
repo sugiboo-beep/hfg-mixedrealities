@@ -1,0 +1,266 @@
+{
+ "meta": {
+  "title": "Mixed Realities and Digitalities Lab",
+  "tagline": "Medienkunst",
+  "institution": {
+   "label": "HfG Karlsruhe",
+   "url": "https://hfg-karlsruhe.de"
+  },
+  "source": "https://1019911-copy4.cargo.site",
+  "intro": "A media art lab at the HfG Karlsruhe working across mixed realities, digital artefacts and speculative narrative. Seminars, field trips and exhibitions where fiction, technology and political history meet."
+ },
+ "nav": [
+  {
+   "label": "Projects",
+   "href": "projects/index.html",
+   "children": [
+    {
+     "label": "The Floor is Lava",
+     "href": "projects/the-floor-is-lava.html"
+    },
+    {
+     "label": "Frameworks of Fiction",
+     "href": "projects/frameworks-of-fiction.html"
+    },
+    {
+     "label": "Remember the Future",
+     "href": "projects/remember-the-future.html"
+    },
+    {
+     "label": "Grand Hotel Waldlust",
+     "href": "projects/grand-hotel-waldlust.html"
+    },
+    {
+     "label": "Disruptive Worlding",
+     "href": "projects/disruptive-worlding.html"
+    },
+    {
+     "label": "Hybrid Biennale Hellerau",
+     "href": "projects/hybrid-biennale-hellerau.html"
+    },
+    {
+     "label": "Diploma",
+     "href": "projects/diploma.html"
+    }
+   ]
+  },
+  {
+   "label": "Research",
+   "href": null,
+   "children": [
+    {
+     "label": "Publications",
+     "href": "research/publications.html"
+    },
+    {
+     "label": "Cooperations",
+     "href": "research/cooperations.html"
+    }
+   ]
+  },
+  {
+   "label": "People",
+   "href": null,
+   "children": [
+    {
+     "label": "Students",
+     "href": "people/students.html"
+    },
+    {
+     "label": "Alumni",
+     "href": "people/alumni.html"
+    },
+    {
+     "label": "Teaching Bodies",
+     "href": "people/teaching-bodies.html"
+    }
+   ]
+  },
+  {
+   "label": "Events",
+   "href": null,
+   "children": [
+    {
+     "label": "Exhibitions",
+     "href": "events/exhibitions.html"
+    },
+    {
+     "label": "Rundgang",
+     "href": "events/rundgang.html"
+    },
+    {
+     "label": "Festivals",
+     "href": "events/festivals.html"
+    }
+   ]
+  },
+  {
+   "label": "Gallery",
+   "href": "gallery.html",
+   "children": []
+  }
+ ],
+ "projects": [
+  {
+   "slug": "the-floor-is-lava",
+   "source": "the-floor-is-lava_1",
+   "title": "The Floor is Lava",
+   "kicker": "Seminar in collaboration with UMBAU",
+   "cover": "G2952547870625868394354467949734",
+   "works_source": "the-floor-is-lava_2",
+   "works_intro": "Individual and collaborative contributions developed during the seminar and the field trip to Stromboli."
+  },
+  {
+   "slug": "frameworks-of-fiction",
+   "source": "frameworks-of-fiction",
+   "title": "Frameworks of Fiction",
+   "kicker": "Seminar with Kunsthalle Mannheim",
+   "cover": "K3053562891033849253707574168742"
+  },
+  {
+   "slug": "remember-the-future",
+   "source": "remember-the-future-nsu-komplex-auflösen",
+   "title": "Remember the Future",
+   "subtitle": "NSU Komplex auflösen",
+   "kicker": "With Staatsarchiv Chemnitz, ASA FF and NSU – Offener Prozess",
+   "cover": null
+  },
+  {
+   "slug": "grand-hotel-waldlust",
+   "source": "grand-hotel-waldlust",
+   "title": "Grand Hotel Waldlust",
+   "kicker": "Seminar with Waldlust e.V., Freudenstadt",
+   "cover": null
+  },
+  {
+   "slug": "disruptive-worlding",
+   "source": "disruptive-worlding",
+   "title": "Disruptive Worlding",
+   "kicker": "Seminar by Charlotte Eifler with Ebba Fransén Walhör and Agnieszka Roguski",
+   "cover": null
+  },
+  {
+   "slug": "hybrid-biennale-hellerau",
+   "source": "hybrid-biennale-hellerau-theft-as-a-political-strategy",
+   "title": "Hybrid Biennale Hellerau",
+   "subtitle": "Theft as a political strategy",
+   "kicker": "With Artificial Museum and HELLERAU",
+   "cover": null
+  },
+  {
+   "slug": "diploma",
+   "source": "diplomarbeit",
+   "title": "Diploma",
+   "kicker": "Diploma projects",
+   "cover": null
+  }
+ ],
+ "works": [
+  {
+   "slug": "sukyoung-lee",
+   "source": "sukyoung-lee",
+   "title": "Backbone on Unsteady Ground",
+   "author": "Sukyoung Lee",
+   "cover": "V2952507083103833991459728018598",
+   "project": "the-floor-is-lava",
+   "skip": 2
+  },
+  {
+   "slug": "benedikt-endres",
+   "source": "benedikt-endres",
+   "title": "The Ground beneath",
+   "author": "Benedikt Endres",
+   "cover": "S2952513096705508532626135731366",
+   "project": "the-floor-is-lava",
+   "skip": 3,
+   "subtitle": "A game of Perspective and future",
+   "note": "Dialog- und Regiefassung"
+  },
+  {
+   "slug": "daeyong-lee",
+   "source": "daeyong-lee",
+   "title": "Practicing Uncertainty",
+   "author": "Daeyong Lee",
+   "cover": "G2952547870625868394354467949734",
+   "project": "the-floor-is-lava",
+   "skip": 2
+  }
+ ],
+ "sections": [
+  {
+   "slug": "research/publications",
+   "source": "publications",
+   "title": "Publications",
+   "group": "Research"
+  },
+  {
+   "slug": "research/cooperations",
+   "source": "cooperations",
+   "title": "Cooperations",
+   "group": "Research"
+  },
+  {
+   "slug": "people/students",
+   "source": "students",
+   "title": "Students",
+   "group": "People"
+  },
+  {
+   "slug": "people/alumni",
+   "source": "alumni",
+   "title": "Alumni",
+   "group": "People"
+  },
+  {
+   "slug": "people/teaching-bodies",
+   "source": "teaching-bodies",
+   "title": "Teaching Bodies",
+   "group": "People"
+  },
+  {
+   "slug": "events/exhibitions",
+   "source": "exhibitions",
+   "title": "Exhibitions",
+   "group": "Events"
+  },
+  {
+   "slug": "events/rundgang",
+   "source": "rundgang",
+   "title": "Rundgang",
+   "group": "Events"
+  },
+  {
+   "slug": "events/festivals",
+   "source": "festivals",
+   "title": "Festivals",
+   "group": "Events"
+  }
+ ],
+ "captions": {
+  "V2952507083103833991459728018598": "UMBAU drawing, Sukyoung Lee",
+  "G2952547870625868394354467949734": "Daeyong Lee",
+  "S2952513096705508532626135731366": "Benedikt Endres",
+  "V2951093145981308537546870377638": "Untitled",
+  "M3055928029201873255195050790054": "Plumbing The Sublime, Michelle Emmert",
+  "Q3055928029257213487416179444902": "The Burning Field, Paula Michelle",
+  "B3055928029091192790752793480358": "Elsewhere, Ruby Sugi",
+  "G3055928029035852558531664825510": "Tress in Formation I, Daeyong Lee",
+  "K3055928029054299302605374377126": "Tress in Formation II, Daeyong Lee",
+  "E3055928029072746046679083928742": "Tress in Formation III, Daeyong Lee",
+  "N3055928029275660231489888996518": "Tree Memory, still",
+  "R3055928029220319999268760341670": "MetaHuman, Unreal Engine",
+  "I3055928029238766743342469893286": "Solid Chair",
+  "V3055928029128086278900212583590": "Hoin I",
+  "C3055928029146533022973922135206": "Hoin II",
+  "W3055928029164979767047631686822": "Hoin III",
+  "T2995830788748436178802913594534": "Arenal",
+  "D2995714135357390021328332410022": "Arenal",
+  "K3053563368564713089826736852134": "IGN",
+  "K3053562891052295997781283720358": "IGN",
+  "K3053562891033849253707574168742": "Coming soon",
+  "Y3053562891070742741854993271974": "Loving",
+  "J3057665916957328007953948101798": "Drawing",
+  "Q3055928029109639534826503031974": "Figure 1"
+ },
+ "placeholder": "This section has no content on the source site yet. It is kept in place so the structure stays complete."
+}
