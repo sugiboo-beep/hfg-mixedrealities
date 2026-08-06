@@ -65,8 +65,8 @@ gallery frame).
 Two things are hidden: the diamond beside the wordmark tips every framed image off its axis and
 back, and typing `lava` warms the page.
 
-All of it is suppressed under `prefers-reduced-motion`, the custom cursor and pointer effects only
-run for a fine pointer, and the page is fully readable with scripting off.
+All of it is suppressed under `prefers-reduced-motion`, pointer effects only run for a fine
+pointer, and the page is fully readable with scripting off.
 
 ## Notes on fidelity
 
