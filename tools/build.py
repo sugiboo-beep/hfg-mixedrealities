@@ -246,7 +246,6 @@ class SiteBuilder:
         inst = meta["institution"]
         return f"""<footer class="site-foot">
   <div class="shell">
-    <h2 class="foot-mark reveal"><span>Mixed realities,</span><span>digital grounds.</span></h2>
     <div class="foot-cols reveal">
       {''.join(cols)}
       <div>
