@@ -683,23 +683,92 @@ a.group-head:hover {
   position: relative;
   overflow: hidden;
   background: var(--paper-deep);
-  /* A blob silhouette, not a rectangle: five variants cycle through the grid so no two
-     neighbours share a shape. */
-  border-radius: 38% 62% 55% 45% / 45% 40% 60% 55%;
   /* rotate, translate and scale are separate properties, so the resting tilt, the lift and the
      wiggle can each be driven independently without one overwriting the others. */
   rotate: calc(var(--tilt, 0deg) + var(--chaos, 0deg));
   transition: rotate 0.7s var(--spring), translate 0.6s var(--spring), scale 0.6s var(--spring),
-    border-radius 0.6s var(--ease), box-shadow 0.6s var(--ease), opacity 0.5s var(--ease);
+    clip-path 0.5s var(--spring), border-radius 0.5s var(--spring), box-shadow 0.6s var(--ease),
+    opacity 0.5s var(--ease);
 }
 
-.tile:nth-child(5n + 2) { border-radius: 62% 38% 45% 55% / 55% 60% 40% 45%; }
-.tile:nth-child(5n + 3) { border-radius: 50% 50% 35% 65% / 60% 35% 65% 40%; }
-.tile:nth-child(5n + 4) { border-radius: 45% 55% 60% 40% / 40% 55% 45% 60%; }
-.tile:nth-child(5n + 5) { border-radius: 55% 45% 40% 60% / 50% 45% 55% 50%; }
+/* Six shapes, not one blob smoothed toward a circle: a splat, a diamond, a hex, a star, a
+   torn-paper cutout and a second splat, cycling so neighbours never repeat. Each idles through
+   its own slow wiggle and pops toward a second state on hover, same point count, so it morphs
+   rather than jumping. */
+.tile:nth-child(6n + 1) {
+  border-radius: 20% 80% 65% 35% / 30% 25% 75% 70%;
+  animation: shape-blob-a 12s var(--ease) infinite;
+}
+.tile:nth-child(6n + 1):hover { border-radius: 70% 30% 25% 75% / 65% 70% 30% 35%; }
 
-.tile:hover {
-  border-radius: 46% 54% 48% 52% / 52% 46% 54% 48%;
+.tile:nth-child(6n + 2) {
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  animation: shape-diamond 9s var(--ease) infinite;
+}
+.tile:nth-child(6n + 2):hover { clip-path: polygon(50% 10%, 90% 50%, 50% 90%, 10% 50%); }
+
+.tile:nth-child(6n + 3) {
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  animation: shape-hex 10s var(--ease) infinite;
+}
+.tile:nth-child(6n + 3):hover {
+  clip-path: polygon(18% 3%, 82% 3%, 97% 50%, 82% 97%, 18% 97%, 3% 50%);
+}
+
+.tile:nth-child(6n + 4) {
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%,
+    2% 35%, 39% 35%);
+  animation: shape-star 7s var(--ease) infinite;
+}
+.tile:nth-child(6n + 4):hover {
+  clip-path: polygon(50% -6%, 65% 33%, 106% 33%, 72% 59%, 85% 98%, 50% 73%, 15% 98%, 28% 59%,
+    -6% 33%, 35% 33%);
+}
+
+.tile:nth-child(6n + 5) {
+  clip-path: polygon(3% 9%, 23% 1%, 44% 7%, 66% 0%, 87% 10%, 100% 27%, 93% 51%, 100% 73%,
+    85% 93%, 61% 100%, 41% 92%, 17% 100%, 4% 77%, 9% 50%, 0% 25%);
+}
+.tile:nth-child(6n + 5):hover {
+  clip-path: polygon(1% 7%, 25% 4%, 42% 10%, 68% 3%, 89% 13%, 98% 30%, 91% 53%, 98% 76%,
+    83% 96%, 63% 97%, 39% 95%, 19% 97%, 2% 80%, 11% 53%, 3% 22%);
+}
+
+.tile:nth-child(6n + 6) {
+  border-radius: 65% 35% 30% 70% / 55% 65% 35% 45%;
+  animation: shape-blob-b 13s var(--ease) infinite;
+}
+.tile:nth-child(6n + 6):hover { border-radius: 30% 70% 65% 35% / 45% 35% 65% 55%; }
+
+@keyframes shape-blob-a {
+  0%, 100% { border-radius: 20% 80% 65% 35% / 30% 25% 75% 70%; }
+  50% { border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%; }
+}
+
+@keyframes shape-blob-b {
+  0%, 100% { border-radius: 65% 35% 30% 70% / 55% 65% 35% 45%; }
+  50% { border-radius: 40% 60% 55% 45% / 40% 50% 55% 60%; }
+}
+
+@keyframes shape-diamond {
+  0%, 100% { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+  50% { clip-path: polygon(50% 8%, 92% 50%, 50% 92%, 8% 50%); }
+}
+
+@keyframes shape-hex {
+  0%, 100% { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); }
+  50% { clip-path: polygon(28% 5%, 72% 5%, 94% 50%, 72% 95%, 28% 95%, 6% 50%); }
+}
+
+@keyframes shape-star {
+  0%, 100% {
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%,
+      2% 35%, 39% 35%);
+  }
+  50% {
+    clip-path: polygon(50% 4%, 60% 37%, 92% 37%, 66% 58%, 76% 87%, 50% 68%, 24% 87%, 34% 58%,
+      8% 37%, 40% 37%);
+  }
 }
 
 .gallery .tile {
@@ -922,14 +991,32 @@ a.group-head:hover {
   aspect-ratio: 4 / 3;
   background: var(--paper-deep);
   border-radius: 42% 58% 63% 37% / 41% 47% 53% 59%;
-  transition: border-radius 0.6s var(--ease);
+  animation: shape-blob-a 11s var(--ease) infinite;
+  transition: border-radius 0.5s var(--spring), clip-path 0.5s var(--spring);
 }
 
-.card-work:nth-child(3n + 2) .frame { border-radius: 58% 42% 39% 61% / 54% 60% 40% 46%; }
-.card-work:nth-child(3n + 3) .frame { border-radius: 48% 52% 57% 43% / 60% 44% 56% 40%; }
+.card-work:nth-child(3n + 2) .frame {
+  border-radius: 0;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  animation: shape-hex 10s var(--ease) infinite;
+}
+
+.card-work:nth-child(3n + 3) .frame {
+  border-radius: 0;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  animation: shape-diamond 9s var(--ease) infinite;
+}
 
 .card-work:hover .frame {
-  border-radius: 50% 50% / 50% 50%;
+  border-radius: 65% 35% 30% 70% / 55% 65% 35% 45%;
+}
+
+.card-work:nth-child(3n + 2):hover .frame {
+  clip-path: polygon(18% 3%, 82% 3%, 97% 50%, 82% 97%, 18% 97%, 3% 50%);
+}
+
+.card-work:nth-child(3n + 3):hover .frame {
+  clip-path: polygon(50% 10%, 90% 50%, 50% 90%, 10% 50%);
 }
 
 .card-work img {
