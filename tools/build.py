@@ -626,7 +626,7 @@ TEMPLATE = """<!doctype html>
 <meta property="og:description" content="{description}">
 <meta property="og:image" content="{thumbnail}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#f2b705">
+<meta name="theme-color" content="#ffc61a">
 <script>document.documentElement.className += " has-js";</script>
 <link rel="stylesheet" href="{glightbox_css}">
 <link rel="stylesheet" href="{css}">

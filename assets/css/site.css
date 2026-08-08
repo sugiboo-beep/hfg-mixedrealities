@@ -8,17 +8,17 @@
   --paper: #f3efe8;
   --paper-deep: #e7e0d4;
 
-  /* Obangsaek gold is the signature, sitting at 1.6:1 on paper and 10.4:1 on ink, so it is only
+  /* Obangsaek gold is the signature, sitting at 1.4:1 on paper and 12.1:1 on ink, so it is only
      ever a fill or a mark on a dark ground, never text on the page. */
-  --acid: #f2b705;
+  --acid: #ffc61a;
 
   /* One hue per section, drawn from Korean obangsaek (blue/red/yellow/black) plus dancheong's
-     intermediate green, each measured at 4.2:1 or better against the paper. */
-  --green: #186b3c;
-  --blue: #1b4b9c;
-  --violet: #241e2e;
-  --pink: #b8291e;
-  --amber: #8f5e08;
+     intermediate green, pushed as vivid as the paper contrast bar allows. */
+  --green: #0c7a3e;
+  --blue: #1450c4;
+  --violet: #3d1e63;
+  --pink: #d62a1e;
+  --amber: #9c7500;
 
   /* Whatever the current page's section is; pages override it on the body. */
   --accent: var(--green);
@@ -73,30 +73,6 @@ body::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.22'/%3E%3C/svg%3E");
 }
 
-/* A brief digital glitch on an interval: scanlines and dot noise, jittered sideways, gone in a blink. */
-body::before {
-  content: "";
-  position: fixed;
-  inset: -2% -4%;
-  z-index: 8980;
-  pointer-events: none;
-  opacity: 0;
-  mix-blend-mode: multiply;
-  background-image:
-    repeating-linear-gradient(0deg, rgba(20, 15, 16, 0.55) 0 1px, transparent 1px 3px),
-    radial-gradient(rgba(20, 15, 16, 0.7) 0.7px, transparent 0.8px);
-  background-size: 100% 3px, 5px 5px;
-  background-position: 0 0, 0 0;
-  animation: glitch-flicker 8.5s steps(1, jump-none) infinite;
-}
-
-@keyframes glitch-flicker {
-  0%, 95.4%, 100% { opacity: 0; translate: 0 0; }
-  95.6% { opacity: 0.4; translate: -8px 0; }
-  95.9% { opacity: 0.15; translate: 6px 0; }
-  96.2% { opacity: 0.32; translate: -3px 0; background-position: 3px 0, 2px 0; }
-  96.5% { opacity: 0; translate: 0 0; }
-}
 
 img {
   max-width: 100%;
@@ -171,8 +147,9 @@ body.a-amber { --accent: var(--amber); }
 /* ---------------------------------------------------------- typography */
 
 h1, h2, h3 {
-  font-family: var(--display);
-  font-weight: 400;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.04;
   margin: 0;
@@ -556,6 +533,32 @@ a.group-head:hover {
   pointer-events: none;
 }
 
+/* A glitch wallpaper behind the whole home page: scanlines and dot noise, sitting under everything,
+   with the odd sideways jolt. Scoped to the hero, so it only ever exists on the home page. */
+.hero::after {
+  content: "";
+  position: fixed;
+  inset: -2% -4%;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(20, 15, 16, 0.5) 0 1px, transparent 1px 4px),
+    radial-gradient(rgba(20, 15, 16, 0.6) 0.7px, transparent 0.8px);
+  background-size: 100% 4px, 6px 6px;
+  background-position: 0 0, 0 0;
+  animation: glitch-wallpaper 7s steps(1, jump-none) infinite;
+}
+
+@keyframes glitch-wallpaper {
+  0%, 92%, 100% { opacity: 0.16; translate: 0 0; }
+  92.3% { opacity: 0.5; translate: -10px 0; }
+  92.6% { opacity: 0.1; translate: 8px 0; }
+  92.9% { opacity: 0.4; translate: -4px 0; background-position: 4px 0, 3px 0; }
+  93.2% { opacity: 0.16; translate: 0 0; }
+}
+
 @keyframes blob-wiggle {
   0%, 100% { border-radius: 42% 58% 63% 37% / 41% 47% 53% 59%; rotate: 0deg; }
   50% { border-radius: 58% 42% 39% 61% / 54% 60% 40% 46%; rotate: 6deg; }
@@ -812,7 +815,9 @@ a.group-head:hover {
 }
 
 .index-row .name {
-  font-family: var(--display);
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 600;
   font-size: clamp(1.35rem, 2.9vw, 2.5rem);
   line-height: 1.05;
   transition: transform 0.55s var(--spring), color 0.4s var(--ease);
@@ -918,7 +923,9 @@ a.group-head:hover {
 
 .card-work .meta .name {
   display: block;
-  font-family: var(--display);
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 600;
   font-size: 1.25rem;
   letter-spacing: 0.01em;
   line-height: 1.1;
@@ -938,7 +945,7 @@ a.group-head:hover {
 
 .page-head h1 {
   font-size: clamp(2.1rem, 5.6vw, 5.2rem);
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: -0.005em;
 }
 
@@ -969,7 +976,9 @@ a.group-head:hover {
 
 .pager a {
   padding-block: clamp(1.6rem, 3vw, 2.8rem);
-  font-family: var(--display);
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 600;
   font-size: clamp(1.05rem, 1.9vw, 1.7rem);
   transition: color 0.35s var(--ease), transform 0.55s var(--spring);
 }
@@ -1174,7 +1183,7 @@ a.group-head:hover {
   inset: 0;
   z-index: 8900;
   pointer-events: none;
-  background: radial-gradient(120% 80% at 50% 120%, rgba(242, 183, 5, 0.75), rgba(242, 183, 5, 0) 65%);
+  background: radial-gradient(120% 80% at 50% 120%, rgba(255, 198, 26, 0.75), rgba(255, 198, 26, 0) 65%);
   animation: heat 2.4s var(--ease) forwards;
 }
 
@@ -1189,7 +1198,8 @@ a.group-head:hover {
 }
 
 .glightbox-clean .gslide-title {
-  font-family: var(--display);
+  font-family: var(--serif);
+  font-style: italic;
   color: var(--ink);
 }
 
