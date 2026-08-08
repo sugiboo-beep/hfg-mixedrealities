@@ -8,17 +8,16 @@
   --paper: #f3efe8;
   --paper-deep: #e7e0d4;
 
-  /* Neon green is the signature, sitting at 1.18:1 on paper and 14:1 on ink, so it is only
+  /* Flash red is the signature, sitting at 3.5:1 on paper and 4.8:1 on ink, so it is only
      ever a fill or a mark on a dark ground, never text on the page. */
-  --acid: #39ff14;
+  --acid: #ff0033;
 
-  /* One hue per section, drawn from Korean obangsaek (blue/red/yellow/black) plus dancheong's
-     intermediate green, pushed as vivid as the paper contrast bar allows. */
-  --green: #0c7a3e;
-  --blue: #1450c4;
-  --violet: #3d1e63;
-  --pink: #d62a1e;
-  --amber: #9c7500;
+  /* One hue per section, from the given palette. */
+  --green: #68f9dc;
+  --blue: #293bb2;
+  --violet: #7833f7;
+  --pink: #d9baad;
+  --amber: #bba315;
 
   /* Whatever the current page's section is; pages override it on the body. */
   --accent: var(--green);
@@ -539,32 +538,6 @@ a.group-head:hover {
   pointer-events: none;
 }
 
-/* A glitch wallpaper behind the whole home page: scanlines and dot noise, sitting under everything,
-   with the odd sideways jolt. Scoped to the hero, so it only ever exists on the home page. */
-.hero::after {
-  content: "";
-  position: fixed;
-  inset: -2% -4%;
-  z-index: -2;
-  pointer-events: none;
-  opacity: 0.16;
-  mix-blend-mode: multiply;
-  background-image:
-    repeating-linear-gradient(0deg, rgba(20, 15, 16, 0.5) 0 1px, transparent 1px 4px),
-    radial-gradient(rgba(20, 15, 16, 0.6) 0.7px, transparent 0.8px);
-  background-size: 100% 4px, 6px 6px;
-  background-position: 0 0, 0 0;
-  animation: glitch-wallpaper 7s steps(1, jump-none) infinite;
-}
-
-@keyframes glitch-wallpaper {
-  0%, 92%, 100% { opacity: 0.16; translate: 0 0; }
-  92.3% { opacity: 0.5; translate: -10px 0; }
-  92.6% { opacity: 0.1; translate: 8px 0; }
-  92.9% { opacity: 0.4; translate: -4px 0; background-position: 4px 0, 3px 0; }
-  93.2% { opacity: 0.16; translate: 0 0; }
-}
-
 @keyframes blob-wiggle {
   0%, 100% { border-radius: 42% 58% 63% 37% / 41% 47% 53% 59%; rotate: 0deg; }
   50% { border-radius: 58% 42% 39% 61% / 54% 60% 40% 46%; rotate: 6deg; }
@@ -663,6 +636,16 @@ a.group-head:hover {
 
 .hero-meta .dot {
   color: var(--accent);
+  animation: flash-red 2.6s steps(2, jump-none) infinite;
+}
+
+.hero-meta .dot:nth-of-type(4) {
+  animation-delay: 0.6s;
+}
+
+@keyframes flash-red {
+  0%, 40%, 100% { color: var(--accent); }
+  20% { color: var(--acid); }
 }
 
 .scroll-hint {
@@ -700,11 +683,23 @@ a.group-head:hover {
   position: relative;
   overflow: hidden;
   background: var(--paper-deep);
+  /* A blob silhouette, not a rectangle: five variants cycle through the grid so no two
+     neighbours share a shape. */
+  border-radius: 38% 62% 55% 45% / 45% 40% 60% 55%;
   /* rotate, translate and scale are separate properties, so the resting tilt, the lift and the
      wiggle can each be driven independently without one overwriting the others. */
   rotate: calc(var(--tilt, 0deg) + var(--chaos, 0deg));
   transition: rotate 0.7s var(--spring), translate 0.6s var(--spring), scale 0.6s var(--spring),
-    box-shadow 0.6s var(--ease), opacity 0.5s var(--ease);
+    border-radius 0.6s var(--ease), box-shadow 0.6s var(--ease), opacity 0.5s var(--ease);
+}
+
+.tile:nth-child(5n + 2) { border-radius: 62% 38% 45% 55% / 55% 60% 40% 45%; }
+.tile:nth-child(5n + 3) { border-radius: 50% 50% 35% 65% / 60% 35% 65% 40%; }
+.tile:nth-child(5n + 4) { border-radius: 45% 55% 60% 40% / 40% 55% 45% 60%; }
+.tile:nth-child(5n + 5) { border-radius: 55% 45% 40% 60% / 50% 45% 55% 50%; }
+
+.tile:hover {
+  border-radius: 46% 54% 48% 52% / 52% 46% 54% 48%;
 }
 
 .gallery .tile {
@@ -926,6 +921,15 @@ a.group-head:hover {
   overflow: hidden;
   aspect-ratio: 4 / 3;
   background: var(--paper-deep);
+  border-radius: 42% 58% 63% 37% / 41% 47% 53% 59%;
+  transition: border-radius 0.6s var(--ease);
+}
+
+.card-work:nth-child(3n + 2) .frame { border-radius: 58% 42% 39% 61% / 54% 60% 40% 46%; }
+.card-work:nth-child(3n + 3) .frame { border-radius: 48% 52% 57% 43% / 60% 44% 56% 40%; }
+
+.card-work:hover .frame {
+  border-radius: 50% 50% / 50% 50%;
 }
 
 .card-work img {
@@ -1217,7 +1221,7 @@ a.group-head:hover {
   inset: 0;
   z-index: 8900;
   pointer-events: none;
-  background: radial-gradient(120% 80% at 50% 120%, rgba(57, 255, 20, 0.75), rgba(57, 255, 20, 0) 65%);
+  background: radial-gradient(120% 80% at 50% 120%, rgba(255, 0, 51, 0.75), rgba(255, 0, 51, 0) 65%);
   animation: heat 2.4s var(--ease) forwards;
 }
 
