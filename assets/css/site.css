@@ -8,9 +8,9 @@
   --paper: #f3efe8;
   --paper-deep: #e7e0d4;
 
-  /* Obangsaek gold is the signature, sitting at 1.4:1 on paper and 12.1:1 on ink, so it is only
+  /* Neon green is the signature, sitting at 1.18:1 on paper and 14:1 on ink, so it is only
      ever a fill or a mark on a dark ground, never text on the page. */
-  --acid: #ffc61a;
+  --acid: #39ff14;
 
   /* One hue per section, drawn from Korean obangsaek (blue/red/yellow/black) plus dancheong's
      intermediate green, pushed as vivid as the paper contrast bar allows. */
@@ -250,28 +250,30 @@ a {
   text-decoration: none;
 }
 
+/* A marker-highlighter block, not a ruled underline: it pops on behind the text, slightly
+   lopsided, like a felt tip dragged across a page rather than a drafted line. */
 .link-sweep {
   position: relative;
+  z-index: 0;
   display: inline-block;
 }
 
 .link-sweep::after {
   content: "";
   position: absolute;
-  left: 0;
-  bottom: -0.14em;
-  width: 100%;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.45s var(--ease);
+  inset: -0.06em -0.32em;
+  z-index: -1;
+  background: var(--acid);
+  border-radius: 62% 38% 57% 43% / 46% 61% 39% 54%;
+  transform: scale(0.35) rotate(-4deg);
+  opacity: 0;
+  transition: transform 0.4s var(--spring), opacity 0.3s var(--ease);
 }
 
 .link-sweep:hover::after,
 .link-sweep:focus-visible::after {
-  transform: scaleX(1);
-  transform-origin: left;
+  transform: scale(1) rotate(-1.5deg);
+  opacity: 1;
 }
 
 .link-inline {
@@ -475,16 +477,20 @@ a.group-head:hover {
   padding: 0;
 }
 
+/* Two petal shapes rather than drafted bars, crossing into an asterisk instead of a ruled X. */
 .rail-toggle .bar {
   display: block;
-  height: 1px;
+  height: 5px;
   width: 100%;
+  border-radius: 65% 35% 55% 45% / 50% 65% 35% 50%;
   background: var(--ink);
-  transition: transform 0.45s var(--spring), background-color 0.3s var(--ease);
+  transition: transform 0.45s var(--spring), background-color 0.3s var(--ease),
+    border-radius 0.5s var(--ease);
 }
 
 .rail-toggle:hover .bar {
   background: var(--accent);
+  border-radius: 35% 65% 45% 55% / 65% 35% 55% 45%;
 }
 
 .rail-toggle .bar:first-child {
@@ -617,14 +623,42 @@ a.group-head:hover {
 .hero-meta {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.6rem 1.2rem;
+  align-items: center;
+  gap: 0.7rem 0.9rem;
   margin: 1.8rem 0 0;
   font-family: var(--sans);
   font-size: 0.82rem;
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+/* Each phrase sits in its own lopsided colour block, not strung along one plain line. */
+.hero-meta span:not(.dot) {
+  display: inline-block;
+  padding: 0.3em 0.6em 0.24em;
+  rotate: -1.2deg;
+}
+
+.hero-meta span:not(.dot):nth-of-type(1) {
+  background: var(--acid);
+  color: var(--ink);
+  border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%;
+  rotate: -1.6deg;
+}
+
+.hero-meta span:not(.dot):nth-of-type(3) {
+  background: var(--accent);
+  color: var(--paper);
+  border-radius: 40% 60% 45% 55% / 55% 40% 60% 45%;
+  rotate: 1.3deg;
+}
+
+.hero-meta span:not(.dot):nth-of-type(5) {
+  background: var(--ink);
+  color: var(--acid);
+  border-radius: 55% 45% 60% 40% / 40% 55% 45% 60%;
+  rotate: -0.8deg;
 }
 
 .hero-meta .dot {
@@ -1183,7 +1217,7 @@ a.group-head:hover {
   inset: 0;
   z-index: 8900;
   pointer-events: none;
-  background: radial-gradient(120% 80% at 50% 120%, rgba(255, 198, 26, 0.75), rgba(255, 198, 26, 0) 65%);
+  background: radial-gradient(120% 80% at 50% 120%, rgba(57, 255, 20, 0.75), rgba(57, 255, 20, 0) 65%);
   animation: heat 2.4s var(--ease) forwards;
 }
 
