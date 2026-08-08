@@ -8,16 +8,17 @@
   --paper: #f3efe8;
   --paper-deep: #e7e0d4;
 
-  /* Neon green is the signature, but it sits at 1.03:1 on paper and 16.1:1 on ink, so it is only
+  /* Obangsaek gold is the signature, sitting at 1.6:1 on paper and 10.4:1 on ink, so it is only
      ever a fill or a mark on a dark ground, never text on the page. */
-  --acid: #c8ff2e;
+  --acid: #f2b705;
 
-  /* One hue per section, each measured at 4.2:1 or better against the paper. */
-  --green: #0a7d45;
-  --blue: #1f3ae0;
-  --violet: #7526bb;
-  --pink: #d40f68;
-  --amber: #b4560a;
+  /* One hue per section, drawn from Korean obangsaek (blue/red/yellow/black) plus dancheong's
+     intermediate green, each measured at 4.2:1 or better against the paper. */
+  --green: #186b3c;
+  --blue: #1b4b9c;
+  --violet: #241e2e;
+  --pink: #b8291e;
+  --amber: #8f5e08;
 
   /* Whatever the current page's section is; pages override it on the body. */
   --accent: var(--green);
@@ -70,6 +71,31 @@ body::after {
   opacity: 0.38;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.22'/%3E%3C/svg%3E");
+}
+
+/* A brief digital glitch on an interval: scanlines and dot noise, jittered sideways, gone in a blink. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -2% -4%;
+  z-index: 8980;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: multiply;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(20, 15, 16, 0.55) 0 1px, transparent 1px 3px),
+    radial-gradient(rgba(20, 15, 16, 0.7) 0.7px, transparent 0.8px);
+  background-size: 100% 3px, 5px 5px;
+  background-position: 0 0, 0 0;
+  animation: glitch-flicker 8.5s steps(1, jump-none) infinite;
+}
+
+@keyframes glitch-flicker {
+  0%, 95.4%, 100% { opacity: 0; translate: 0 0; }
+  95.6% { opacity: 0.4; translate: -8px 0; }
+  95.9% { opacity: 0.15; translate: 6px 0; }
+  96.2% { opacity: 0.32; translate: -3px 0; background-position: 3px 0, 2px 0; }
+  96.5% { opacity: 0; translate: 0 0; }
 }
 
 img {
@@ -325,14 +351,17 @@ a {
   pointer-events: none;
 }
 
+/* Same face mixture as the home page hero: a serif for the title words, sans for the small ones. */
 .rail .wordmark {
   display: block;
   margin-top: 2.6rem;
-  font-family: var(--display);
-  font-size: 1.18rem;
-  line-height: 1.18;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.28rem;
+  line-height: 1.16;
+  text-transform: none;
+  letter-spacing: 0;
   transition: opacity 0.4s var(--ease);
 }
 
@@ -344,9 +373,11 @@ a {
 .rail .wordmark span:nth-child(3),
 .rail .wordmark span:nth-child(5) {
   font-family: var(--sans);
-  font-weight: 200;
-  font-size: 0.78em;
-  letter-spacing: 0.12em;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 0.68em;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
   color: var(--ink-soft);
 }
 
@@ -631,7 +662,6 @@ a.group-head:hover {
   display: block;
   position: relative;
   overflow: hidden;
-  border-radius: 14px;
   background: var(--paper-deep);
   /* rotate, translate and scale are separate properties, so the resting tilt, the lift and the
      wiggle can each be driven independently without one overwriting the others. */
@@ -856,7 +886,6 @@ a.group-head:hover {
   display: block;
   overflow: hidden;
   aspect-ratio: 4 / 3;
-  border-radius: 16px;
   background: var(--paper-deep);
 }
 
@@ -1145,7 +1174,7 @@ a.group-head:hover {
   inset: 0;
   z-index: 8900;
   pointer-events: none;
-  background: radial-gradient(120% 80% at 50% 120%, rgba(200, 255, 46, 0.75), rgba(200, 255, 46, 0) 65%);
+  background: radial-gradient(120% 80% at 50% 120%, rgba(242, 183, 5, 0.75), rgba(242, 183, 5, 0) 65%);
   animation: heat 2.4s var(--ease) forwards;
 }
 
