@@ -14,9 +14,7 @@
    "and": "sans",
    "Digitalities": "serif accent",
    "Lab": "sans"
-  },
-  "tagline_kr": "미디어 아트",
-  "place_kr": "카를스루에"
+  }
  },
  "nav": [
   {
@@ -264,26 +262,5 @@
   "J3057665916957328007953948101798": "Drawing",
   "Q3055928029109639534826503031974": "Figure 1"
  },
- "placeholder": "This section has no content on the source site yet. It is kept in place so the structure stays complete.",
- "korean": {
-  "Projects": "프로젝트",
-  "Research": "연구",
-  "People": "사람들",
-  "Events": "행사",
-  "Gallery": "갤러리",
-  "Index": "목록",
-  "Archive": "아카이브",
-  "All images": "전체 이미지",
-  "Selected works": "선별 작업",
-  "Contributions": "기고",
-  "Images": "이미지",
-  "Publications": "출판",
-  "Cooperations": "협력",
-  "Students": "학생",
-  "Alumni": "졸업생",
-  "Teaching Bodies": "교수진",
-  "Exhibitions": "전시",
-  "Rundgang": "룬트강",
-  "Festivals": "페스티벌"
- }
+ "placeholder": "This section has no content on the source site yet. It is kept in place so the structure stays complete."
 }

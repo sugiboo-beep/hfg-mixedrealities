@@ -29,8 +29,9 @@
     system-ui, sans-serif;
   --sans: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", Roboto, system-ui, sans-serif;
   --mono: ui-monospace, Menlo, Consolas, "DejaVu Sans Mono", "Courier New", monospace;
-  --kr: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", "Nanum Gothic",
-    "AppleGothic", sans-serif;
+  /* A warm text serif, mixed against the geometric display face for contrast on the hero. */
+  --serif: "Iowan Old Style", Palatino, "Palatino Linotype", "URW Palladio L", Georgia,
+    "Noto Serif", serif;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -101,43 +102,6 @@ button {
   color: var(--ink);
 }
 
-/* Korean glosses on the site's own labels. The archived prose is never touched. */
-.kr {
-  font-family: var(--kr);
-  font-weight: 400;
-  font-size: 0.78em;
-  letter-spacing: 0.02em;
-  text-transform: none;
-  color: var(--ink-soft);
-  margin-left: 0.55em;
-  opacity: 0.75;
-  transition: color 0.3s var(--ease), opacity 0.3s var(--ease);
-}
-
-a:hover > .kr,
-.nav-group:hover .kr {
-  color: var(--accent);
-  opacity: 1;
-}
-
-.group-head .kr {
-  display: block;
-  margin: 0.1rem 0 0;
-  font-size: 0.85em;
-}
-
-.head-kr {
-  font-family: var(--kr);
-  font-size: clamp(1rem, 1.5vw, 1.35rem);
-  color: var(--ink-soft);
-  margin: 0.9rem 0 0;
-}
-
-.head-kr .kr {
-  margin-left: 0;
-  font-size: 1em;
-}
-
 /* Each section of the site carries its own hue. */
 body.a-green { --accent: var(--green); }
 body.a-blue { --accent: var(--blue); }
@@ -202,8 +166,15 @@ h1, h2, h3 {
   display: inline-block;
   background: var(--acid);
   color: var(--ink);
-  padding: 0.32em 0.7em 0.28em;
+  padding: 0.32em 0.9em 0.28em;
   margin-bottom: 1rem;
+  border-radius: 999px 6px 999px 6px;
+  rotate: -1.4deg;
+  transition: rotate 0.4s var(--spring);
+}
+
+.kicker.mark:hover {
+  rotate: 0.5deg;
 }
 
 .kicker.mark a,
@@ -214,8 +185,9 @@ h1, h2, h3 {
 }
 
 .lede {
+  font-family: var(--serif);
   font-size: clamp(1.2rem, 1.6vw, 1.55rem);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.42;
   max-width: min(44ch, 100%);
   margin: 1.8rem 0 0;
@@ -260,7 +232,11 @@ h1, h2, h3 {
   text-transform: uppercase;
   color: var(--ink-soft);
   padding-bottom: 0.9rem;
-  border-bottom: 1px solid var(--rule);
+  border-bottom: none;
+  background-image: repeating-linear-gradient(90deg, var(--rule) 0 7px, transparent 7px 14px);
+  background-position: bottom;
+  background-repeat: repeat-x;
+  background-size: 100% 2px;
   margin-bottom: clamp(1.75rem, 3.5vw, 3rem);
 }
 
@@ -529,13 +505,35 @@ a.group-head:hover {
 /* ---------------------------------------------------------------- hero */
 
 .hero {
+  position: relative;
   padding-block: clamp(3.5rem, 9vw, 8.5rem) clamp(2rem, 4vw, 3.5rem);
+}
+
+/* A soft freeform blob drifting behind the headline, for an organic counterweight to the type. */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -12%;
+  right: -6%;
+  width: min(48vw, 620px);
+  height: min(48vw, 620px);
+  background: radial-gradient(circle at 32% 30%, color-mix(in srgb, var(--accent) 55%, transparent), transparent 72%);
+  border-radius: 42% 58% 63% 37% / 41% 47% 53% 59%;
+  z-index: -1;
+  opacity: 0.3;
+  animation: blob-wiggle 16s var(--ease) infinite;
+  pointer-events: none;
+}
+
+@keyframes blob-wiggle {
+  0%, 100% { border-radius: 42% 58% 63% 37% / 41% 47% 53% 59%; rotate: 0deg; }
+  50% { border-radius: 58% 42% 39% 61% / 54% 60% 40% 46%; rotate: 6deg; }
 }
 
 .hero h1 {
   font-size: clamp(2.6rem, 8.2vw, 8.6rem);
   line-height: 0.98;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: -0.005em;
   will-change: transform;
 }
@@ -543,20 +541,32 @@ a.group-head:hover {
 .hero h1 .word {
   display: inline-block;
   opacity: 0;
-  transform: translateY(0.55em) rotate(3deg);
+  translate: 0 0.55em;
+  rotate: 3deg;
   animation: rise 1.1s var(--spring) forwards;
 }
 
+/* A loose scatter, word by word, so the line reads as placed rather than set. */
+.hero h1 .word:nth-child(1) { rotate: -2.2deg; }
+.hero h1 .word:nth-child(2) { rotate: 1.4deg; }
+.hero h1 .word:nth-child(3) { rotate: -1deg; translate: 0 0.2em; }
+.hero h1 .word:nth-child(4) { rotate: 1.8deg; }
+.hero h1 .word:nth-child(5) { rotate: -1.3deg; translate: 0 0.15em; }
+
 .hero h1 .serif {
-  font-family: var(--display);
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 600;
 }
 
 .hero h1 .sans {
   font-family: var(--sans);
-  font-weight: 200;
-  font-size: 0.58em;
-  letter-spacing: 0.06em;
-  vertical-align: 0.1em;
+  font-weight: 300;
+  font-size: 0.56em;
+  letter-spacing: 0.01em;
+  text-transform: lowercase;
+  vertical-align: 0.12em;
+  color: var(--ink-soft);
 }
 
 .hero h1 .accent {
@@ -566,7 +576,7 @@ a.group-head:hover {
 @keyframes rise {
   to {
     opacity: 1;
-    transform: none;
+    translate: 0;
   }
 }
 
@@ -576,9 +586,10 @@ a.group-head:hover {
   align-items: baseline;
   gap: 0.6rem 1.2rem;
   margin: 1.8rem 0 0;
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.16em;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
@@ -620,6 +631,7 @@ a.group-head:hover {
   display: block;
   position: relative;
   overflow: hidden;
+  border-radius: 14px;
   background: var(--paper-deep);
   /* rotate, translate and scale are separate properties, so the resting tilt, the lift and the
      wiggle can each be driven independently without one overwriting the others. */
@@ -806,6 +818,7 @@ a.group-head:hover {
 .index-row:hover {
   background: color-mix(in srgb, var(--accent) 7%, transparent);
   padding-inline: 1.2rem;
+  border-radius: 18px;
 }
 
 .index-row:hover .name {
@@ -830,10 +843,20 @@ a.group-head:hover {
   transition: rotate 0.7s var(--spring), transform 0.7s var(--spring);
 }
 
+/* A loose, hand-set scatter by default; the sigil in the rail flattens or re-scatters it. */
+.card-work:nth-child(3n + 1) { --chaos: -1.6deg; }
+.card-work:nth-child(3n + 2) { --chaos: 1.1deg; }
+.card-work:nth-child(3n + 3) { --chaos: -0.6deg; }
+
+.card-work:hover {
+  rotate: 0deg;
+}
+
 .card-work .frame {
   display: block;
   overflow: hidden;
   aspect-ratio: 4 / 3;
+  border-radius: 16px;
   background: var(--paper-deep);
 }
 

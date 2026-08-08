@@ -6,6 +6,8 @@ Inputs are ``content/site.json`` (structure, navigation, curated captions), ``co
 framework dependency; layout comes from ``assets/css/site.css``.
 """
 
+from __future__ import annotations
+
 import hashlib
 import html
 import json
@@ -205,14 +207,13 @@ class SiteBuilder:
         for entry in self.site["nav"]:
             children = entry.get("children") or []
             label = esc(entry["label"])
-            gloss = self.kr(entry["label"])
             if entry.get("href"):
                 head = (
                     f'<a class="group-head" href="{page.url(entry["href"])}">'
-                    f'<span data-scramble>{label}</span>{gloss}</a>'
+                    f'<span data-scramble>{label}</span></a>'
                 )
             else:
-                head = f'<span class="group-head">{label}{gloss}</span>'
+                head = f'<span class="group-head">{label}</span>'
             links = "".join(
                 f'<li><a class="link-sweep" href="{page.url(c["href"])}">{esc(c["label"])}</a></li>'
                 for c in children
@@ -338,16 +339,8 @@ class SiteBuilder:
     def placeholder(self) -> str:
         return f'<p class="note reveal">{esc(self.site["placeholder"])}</p>'
 
-    def kr(self, term: str) -> str:
-        """The Korean gloss for one of the site's own labels, if there is one."""
-        word = self.site.get("korean", {}).get(term)
-        return f'<span class="kr">{esc(word)}</span>' if word else ""
-
     def label(self, left: str, right: str = "") -> str:
-        return (
-            f'<div class="section-label reveal"><span>{left}{self.kr(left)}</span>'
-            f'<span>{right}{self.kr(right)}</span></div>'
-        )
+        return f'<div class="section-label reveal"><span>{left}</span><span>{right}</span></div>'
 
     # ------------------------------------------------------------- pages
 
@@ -387,8 +380,8 @@ class SiteBuilder:
     <p class="kicker mark reveal">{esc(meta['tagline'])} &#183; <a class="link-inline" href="{esc(inst['url'])}" target="_blank" rel="noopener">{esc(inst['label'])}</a></p>
     <h1 data-parallax="0.12">{headline}</h1>
     <div class="hero-meta">
-      <span>Media Art<span class="kr">{esc(meta.get('tagline_kr', ''))}</span></span><span class="dot">&#9670;</span>
-      <span>Karlsruhe<span class="kr">{esc(meta.get('place_kr', ''))}</span></span><span class="dot">&#9670;</span>
+      <span>Media Art</span><span class="dot">&#9670;</span>
+      <span>Karlsruhe</span><span class="dot">&#9670;</span>
       <span>Seminars &amp; Field Work</span>
     </div>
     <p class="lede reveal">{esc(meta['intro'])}</p>
@@ -435,9 +428,8 @@ class SiteBuilder:
                     "Seminars, collaborations and field work of the lab.", "green")
         body = f"""<main>
   <section class="page-head shell">
-    <p class="kicker mark reveal">Index{self.kr('Index')}</p>
+    <p class="kicker mark reveal">Index</p>
     <h1 class="reveal">Projects</h1>
-    <p class="head-kr reveal">{self.kr('Projects')}</p>
     <p class="lede reveal">Seminars and collaborations developed with museums, archives and cultural institutions, each ending in an exhibition, a publication or a field trip.</p>
   </section>
   <section class="shell band">{self.project_index(page)}</section>
@@ -562,9 +554,8 @@ class SiteBuilder:
 
         body = f"""<main>
   <section class="page-head shell">
-    <p class="kicker mark reveal">{esc(section['group'])}{self.kr(section['group'])}</p>
+    <p class="kicker mark reveal">{esc(section['group'])}</p>
     <h1 class="reveal">{esc(section['title'])}</h1>
-    <p class="head-kr reveal">{self.kr(section['title'])}</p>
   </section>
   <section class="shell">
     <div class="cols">
@@ -588,9 +579,8 @@ class SiteBuilder:
 
         body = f"""<main>
   <section class="page-head shell">
-    <p class="kicker mark reveal">Archive{self.kr('Archive')}</p>
+    <p class="kicker mark reveal">Archive</p>
     <h1 class="reveal">Image archive</h1>
-    <p class="head-kr reveal">{self.kr('Archive')}</p>
     <p class="lede reveal">Every image held across the lab's pages, in one gallery. Select any frame to open it full size.</p>
   </section>
   <section class="shell band">
