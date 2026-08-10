@@ -253,24 +253,15 @@ class SiteBuilder:
             )
             cols.append(f'<div><h3>{esc(entry["label"])}</h3><ul>{links}</ul></div>')
 
-        inst = meta["institution"]
         return f"""<footer class="site-foot">
   <div class="shell">
     <div class="foot-cols reveal">
       {''.join(cols)}
-      <div>
-        <h3>Institution</h3>
-        <ul>
-          <li><a class="link-sweep" href="{esc(inst['url'])}" target="_blank" rel="noopener">{esc(inst['label'])}</a></li>
-          <li><a class="link-sweep" href="{page.url('gallery.html')}">Image archive</a></li>
-          <li><a class="link-sweep" href="{page.url('impressum.html')}">Impressum</a></li>
-          <li><a class="link-sweep" href="{page.url('datenschutz.html')}">Datenschutz</a></li>
-        </ul>
-      </div>
     </div>
     <div class="colophon">
       <span>{esc(meta['title'])} &mdash; {esc(meta['tagline'])}</span>
-      <span>Content archived from <a class="link-sweep" href="{esc(meta['source'])}" target="_blank" rel="noopener">{esc(meta['source'].replace('https://', ''))}</a></span>
+      <span><a class="link-sweep" href="{page.url('impressum.html')}">Impressum</a> &middot;
+      <a class="link-sweep" href="{page.url('datenschutz.html')}">Datenschutz</a></span>
     </div>
   </div>
   <button class="to-top" type="button" aria-label="Back to top" data-magnet>&#8593;</button>
