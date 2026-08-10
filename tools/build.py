@@ -390,7 +390,7 @@ class SiteBuilder:
 
   <section class="shell band">
     {self.label('Selected works', 'Archive')}
-    {self.collage(page, 'home-page', 'home', lanes=3)}
+    {self.collage(page, 'home-page', 'home', lanes=2)}
     <p class="more reveal"><a class="link-inline" href="{page.url('gallery.html')}">Enter the full image archive &#8594;</a></p>
   </section>
 

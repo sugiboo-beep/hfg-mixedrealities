@@ -134,7 +134,7 @@ body.a-amber { --accent: var(--amber); }
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(19rem, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(24rem, 100%), 1fr));
   gap: clamp(1.5rem, 3vw, 3rem);
 }
 
@@ -670,12 +670,12 @@ a.group-head:hover {
 /* ------------------------------------------------------------- gallery */
 
 .gallery {
-  columns: 4 300px;
+  columns: 3 380px;
   column-gap: clamp(0.9rem, 1.6vw, 1.6rem);
 }
 
 .gallery.gallery-tight {
-  columns: 2 200px;
+  columns: 2 260px;
 }
 
 .tile {
@@ -687,14 +687,12 @@ a.group-head:hover {
      wiggle can each be driven independently without one overwriting the others. */
   rotate: calc(var(--tilt, 0deg) + var(--chaos, 0deg));
   transition: rotate 0.7s var(--spring), translate 0.6s var(--spring), scale 0.6s var(--spring),
-    clip-path 0.5s var(--spring), border-radius 0.5s var(--spring), box-shadow 0.6s var(--ease),
-    opacity 0.5s var(--ease);
+    border-radius 0.5s var(--spring), box-shadow 0.6s var(--ease), opacity 0.5s var(--ease);
 }
 
-/* Six shapes, not one blob smoothed toward a circle: a splat, a diamond, a hex, a star, a
-   torn-paper cutout and a second splat, cycling so neighbours never repeat. Each idles through
-   its own slow wiggle and pops toward a second state on hover, same point count, so it morphs
-   rather than jumping. */
+/* Six blobs, no straight edges anywhere: each pushes its curve a different way so neighbours
+   never read as the same silhouette, or as a circle. Each idles through its own slow wiggle and
+   pops toward a second, equally organic state on hover. */
 .tile:nth-child(6n + 1) {
   border-radius: 20% 80% 65% 35% / 30% 25% 75% 70%;
   animation: shape-blob-a 12s var(--ease) infinite;
@@ -702,37 +700,28 @@ a.group-head:hover {
 .tile:nth-child(6n + 1):hover { border-radius: 70% 30% 25% 75% / 65% 70% 30% 35%; }
 
 .tile:nth-child(6n + 2) {
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  animation: shape-diamond 9s var(--ease) infinite;
+  border-radius: 82% 18% 42% 58% / 62% 82% 18% 38%;
+  animation: shape-blob-c 9s var(--ease) infinite;
 }
-.tile:nth-child(6n + 2):hover { clip-path: polygon(50% 10%, 90% 50%, 50% 90%, 10% 50%); }
+.tile:nth-child(6n + 2):hover { border-radius: 18% 82% 58% 42% / 38% 18% 82% 62%; }
 
 .tile:nth-child(6n + 3) {
-  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-  animation: shape-hex 10s var(--ease) infinite;
+  border-radius: 30% 70% 70% 30% / 70% 70% 30% 30%;
+  animation: shape-blob-d 10s var(--ease) infinite;
 }
-.tile:nth-child(6n + 3):hover {
-  clip-path: polygon(18% 3%, 82% 3%, 97% 50%, 82% 97%, 18% 97%, 3% 50%);
-}
+.tile:nth-child(6n + 3):hover { border-radius: 70% 30% 30% 70% / 30% 30% 70% 70%; }
 
 .tile:nth-child(6n + 4) {
-  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%,
-    2% 35%, 39% 35%);
-  animation: shape-star 7s var(--ease) infinite;
+  border-radius: 72% 28% 50% 50% / 40% 62% 38% 60%;
+  animation: shape-blob-e 7s var(--ease) infinite;
 }
-.tile:nth-child(6n + 4):hover {
-  clip-path: polygon(50% -6%, 65% 33%, 106% 33%, 72% 59%, 85% 98%, 50% 73%, 15% 98%, 28% 59%,
-    -6% 33%, 35% 33%);
-}
+.tile:nth-child(6n + 4):hover { border-radius: 28% 72% 50% 50% / 60% 38% 62% 40%; }
 
 .tile:nth-child(6n + 5) {
-  clip-path: polygon(3% 9%, 23% 1%, 44% 7%, 66% 0%, 87% 10%, 100% 27%, 93% 51%, 100% 73%,
-    85% 93%, 61% 100%, 41% 92%, 17% 100%, 4% 77%, 9% 50%, 0% 25%);
+  border-radius: 45% 55% 78% 22% / 65% 35% 55% 45%;
+  animation: shape-blob-f 11s var(--ease) infinite;
 }
-.tile:nth-child(6n + 5):hover {
-  clip-path: polygon(1% 7%, 25% 4%, 42% 10%, 68% 3%, 89% 13%, 98% 30%, 91% 53%, 98% 76%,
-    83% 96%, 63% 97%, 39% 95%, 19% 97%, 2% 80%, 11% 53%, 3% 22%);
-}
+.tile:nth-child(6n + 5):hover { border-radius: 55% 45% 22% 78% / 35% 65% 45% 55%; }
 
 .tile:nth-child(6n + 6) {
   border-radius: 65% 35% 30% 70% / 55% 65% 35% 45%;
@@ -750,25 +739,24 @@ a.group-head:hover {
   50% { border-radius: 40% 60% 55% 45% / 40% 50% 55% 60%; }
 }
 
-@keyframes shape-diamond {
-  0%, 100% { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
-  50% { clip-path: polygon(50% 8%, 92% 50%, 50% 92%, 8% 50%); }
+@keyframes shape-blob-c {
+  0%, 100% { border-radius: 82% 18% 42% 58% / 62% 82% 18% 38%; }
+  50% { border-radius: 50% 50% 60% 40% / 45% 55% 45% 55%; }
 }
 
-@keyframes shape-hex {
-  0%, 100% { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); }
-  50% { clip-path: polygon(28% 5%, 72% 5%, 94% 50%, 72% 95%, 28% 95%, 6% 50%); }
+@keyframes shape-blob-d {
+  0%, 100% { border-radius: 30% 70% 70% 30% / 70% 70% 30% 30%; }
+  50% { border-radius: 55% 45% 50% 50% / 50% 55% 45% 50%; }
 }
 
-@keyframes shape-star {
-  0%, 100% {
-    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%,
-      2% 35%, 39% 35%);
-  }
-  50% {
-    clip-path: polygon(50% 4%, 60% 37%, 92% 37%, 66% 58%, 76% 87%, 50% 68%, 24% 87%, 34% 58%,
-      8% 37%, 40% 37%);
-  }
+@keyframes shape-blob-e {
+  0%, 100% { border-radius: 72% 28% 50% 50% / 40% 62% 38% 60%; }
+  50% { border-radius: 45% 55% 60% 40% / 55% 45% 55% 45%; }
+}
+
+@keyframes shape-blob-f {
+  0%, 100% { border-radius: 45% 55% 78% 22% / 65% 35% 55% 45%; }
+  50% { border-radius: 60% 40% 45% 55% / 45% 55% 40% 60%; }
 }
 
 .gallery .tile {
@@ -992,19 +980,17 @@ a.group-head:hover {
   background: var(--paper-deep);
   border-radius: 42% 58% 63% 37% / 41% 47% 53% 59%;
   animation: shape-blob-a 11s var(--ease) infinite;
-  transition: border-radius 0.5s var(--spring), clip-path 0.5s var(--spring);
+  transition: border-radius 0.5s var(--spring);
 }
 
 .card-work:nth-child(3n + 2) .frame {
-  border-radius: 0;
-  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-  animation: shape-hex 10s var(--ease) infinite;
+  border-radius: 30% 70% 70% 30% / 70% 70% 30% 30%;
+  animation: shape-blob-d 10s var(--ease) infinite;
 }
 
 .card-work:nth-child(3n + 3) .frame {
-  border-radius: 0;
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  animation: shape-diamond 9s var(--ease) infinite;
+  border-radius: 82% 18% 42% 58% / 62% 82% 18% 38%;
+  animation: shape-blob-c 9s var(--ease) infinite;
 }
 
 .card-work:hover .frame {
@@ -1012,11 +998,11 @@ a.group-head:hover {
 }
 
 .card-work:nth-child(3n + 2):hover .frame {
-  clip-path: polygon(18% 3%, 82% 3%, 97% 50%, 82% 97%, 18% 97%, 3% 50%);
+  border-radius: 70% 30% 30% 70% / 30% 30% 70% 70%;
 }
 
 .card-work:nth-child(3n + 3):hover .frame {
-  clip-path: polygon(50% 10%, 90% 50%, 50% 90%, 10% 50%);
+  border-radius: 18% 82% 58% 42% / 38% 18% 82% 62%;
 }
 
 .card-work img {
