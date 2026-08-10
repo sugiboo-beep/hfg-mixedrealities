@@ -263,6 +263,8 @@ class SiteBuilder:
         <ul>
           <li><a class="link-sweep" href="{esc(inst['url'])}" target="_blank" rel="noopener">{esc(inst['label'])}</a></li>
           <li><a class="link-sweep" href="{page.url('gallery.html')}">Image archive</a></li>
+          <li><a class="link-sweep" href="{page.url('impressum.html')}">Impressum</a></li>
+          <li><a class="link-sweep" href="{page.url('datenschutz.html')}">Datenschutz</a></li>
         </ul>
       </div>
     </div>
@@ -354,6 +356,7 @@ class SiteBuilder:
             self.build_work(work)
         for section in self.site["sections"]:
             self.build_section(section)
+        self.build_legal()
 
     def build_home(self) -> None:
         meta = self.site["meta"]
@@ -589,6 +592,62 @@ class SiteBuilder:
   </section>
 </main>"""
         page.write(body)
+
+    def build_legal(self) -> None:
+        inst = self.site["meta"]["institution"]
+
+        impressum = Page(self, "impressum.html", "Impressum",
+                          "Legal notice for this archival rebuild of the lab's site.", "amber")
+        impressum.write(f"""<main>
+  <section class="page-head shell">
+    <p class="kicker mark reveal">Legal</p>
+    <h1 class="reveal">Impressum</h1>
+  </section>
+  <section class="shell">
+    <div class="prose">
+      <p class="reveal">This site is an unofficial, privately maintained archival rebuild of the
+      lab's original Cargo site. It has no institutional standing of its own and is not operated
+      by <a class="link-inline" href="{esc(inst['url'])}" target="_blank" rel="noopener">{esc(inst['label'])}</a>;
+      for the institution's own legally binding notice, refer to its site directly.</p>
+      <p class="reveal">Angaben gem&auml;&szlig; &sect; 5 TMG</p>
+      <p class="reveal">Verantwortlich: [Name einsetzen]<br>
+      Anschrift: [Adresse einsetzen]<br>
+      Kontakt: [E-Mail einsetzen]</p>
+      <p class="reveal">Haftungsausschluss: Trotz sorgf&auml;ltiger inhaltlicher Kontrolle
+      &uuml;bernehmen wir keine Haftung f&uuml;r die Inhalte externer Links. F&uuml;r den Inhalt
+      der verlinkten Seiten sind ausschlie&szlig;lich deren Betreiber verantwortlich.</p>
+      <p class="reveal">Urheberrecht: Texte und Bilder auf dieser Seite sind aus der
+      urspr&uuml;nglichen Cargo-Seite archiviert und bleiben Eigentum ihrer jeweiligen
+      Urheber:innen.</p>
+    </div>
+  </section>
+</main>""")
+
+        datenschutz = Page(self, "datenschutz.html", "Datenschutz",
+                            "Privacy notice for this archival rebuild of the lab's site.", "amber")
+        datenschutz.write("""<main>
+  <section class="page-head shell">
+    <p class="kicker mark reveal">Legal</p>
+    <h1 class="reveal">Datenschutz</h1>
+  </section>
+  <section class="shell">
+    <div class="prose">
+      <p class="reveal">Diese Seite erhebt bewusst so wenige Daten wie m&ouml;glich: es gibt kein
+      Kontaktformular, keine Cookies und keine Analyse- oder Tracking-Werkzeuge.</p>
+      <p class="reveal">Hosting: Die Seite wird &uuml;ber GitHub Pages (GitHub, Inc.)
+      ausgeliefert. Beim Aufruf verarbeitet GitHub technisch bedingt die IP-Adresse des
+      aufrufenden Ger&auml;ts; n&auml;heres dazu in GitHub&rsquo;s eigener
+      Datenschutzerkl&auml;rung.</p>
+      <p class="reveal">Lokaler Speicher: Der Auf/Zu-Zustand der Navigationsleiste wird
+      ausschlie&szlig;lich lokal im Browser &uuml;ber localStorage gespeichert, um sie seiten&uuml;bergreifend
+      konsistent zu halten. Diese Angabe verl&auml;sst das Ger&auml;t nie und wird an keinen
+      Server &uuml;bertragen.</p>
+      <p class="reveal">Betroffenenrechte: Soweit personenbezogene Daten verarbeitet werden,
+      haben Sie ein Recht auf Auskunft, Berichtigung, L&ouml;schung und Einschr&auml;nkung der
+      Verarbeitung. Anfragen richten Sie bitte an [E-Mail einsetzen].</p>
+    </div>
+  </section>
+</main>""")
 
     # ------------------------------------------------------------- pager
 
