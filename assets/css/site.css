@@ -61,6 +61,20 @@ body {
   overflow-x: clip;
 }
 
+/* A soft, blurred gradient mesh behind the whole page, fixed so it holds still under scroll. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -15%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 30% at 12% 6%, color-mix(in srgb, var(--acid) 60%, transparent), transparent 70%),
+    radial-gradient(34% 26% at 88% 2%, color-mix(in srgb, var(--ink) 16%, transparent), transparent 72%),
+    radial-gradient(46% 36% at 50% -4%, color-mix(in srgb, var(--acid) 34%, transparent), transparent 75%);
+  filter: blur(70px);
+}
+
 /* Film grain, generated rather than loaded. */
 body::after {
   content: "";
