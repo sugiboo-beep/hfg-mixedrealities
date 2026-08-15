@@ -214,10 +214,13 @@ class SiteBuilder:
                 )
             else:
                 head = f'<span class="group-head">{label}</span>'
-            links = "".join(
-                f'<li><a class="link-sweep" href="{page.url(c["href"])}">{esc(c["label"])}</a></li>'
-                for c in children
-            )
+            link_items = []
+            for c in children:
+                current = ' aria-current="page"' if c["href"] == page.path else ""
+                link_items.append(
+                    f'<li><a class="link-sweep" href="{page.url(c["href"])}"{current}>{esc(c["label"])}</a></li>'
+                )
+            links = "".join(link_items)
             sub = f'<ul class="group-list">{links}</ul>' if links else ""
             groups.append(f'<li class="nav-group">{head}{sub}</li>')
 
