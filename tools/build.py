@@ -381,11 +381,11 @@ class SiteBuilder:
         inst = meta["institution"]
         body = f"""<main>
   <section class="hero shell">
-    <p class="kicker mark reveal">{esc(meta['tagline'])} &#183; <a class="link-inline" href="{esc(inst['url'])}" target="_blank" rel="noopener">{esc(inst['label'])}</a></p>
+    <p class="kicker mark hero-tag reveal">{esc(meta['tagline'])} &#183; <a class="link-inline" href="{esc(inst['url'])}" target="_blank" rel="noopener">{esc(inst['label'])}</a></p>
     <h1 data-parallax="0.12">{headline}</h1>
-    <div class="hero-meta">
-      <span>Media Art</span><span class="dot">&#9670;</span>
-      <span>Karlsruhe</span><span class="dot">&#9670;</span>
+    <div class="hero-meta hero-tag">
+      <span>Media Art</span><span class="dot">&#183;</span>
+      <span>Karlsruhe</span><span class="dot">&#183;</span>
       <span>Seminars &amp; Field Work</span>
     </div>
     <p class="lede reveal">{esc(meta['intro'])}</p>

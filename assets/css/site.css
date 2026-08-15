@@ -572,6 +572,41 @@ a.group-head:hover {
   padding-block: clamp(3.5rem, 9vw, 8.5rem) clamp(2rem, 4vw, 3.5rem);
 }
 
+/* Hero-only text objects: a plain rectangular outline, no fill, no tilt, sitting slightly off
+   the grid rather than snapped to the H1's edge. Everywhere else .kicker.mark keeps its own
+   filled pill treatment; this overrides it only inside the hero. */
+.hero .kicker.mark {
+  background: transparent;
+  color: var(--ink);
+  padding: 0.7em 1em;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  rotate: 0deg;
+}
+
+.hero .kicker.mark:hover {
+  rotate: 0deg;
+}
+
+.hero .kicker.mark a,
+.hero .kicker.mark .kr {
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--ink) 45%, transparent);
+}
+
+/* Both hero text objects can be nudged a short distance from their curated position; the rest
+   of the hero never reflows around them since they stay in normal flow, just shifted visually. */
+.hero-tag {
+  position: relative;
+  cursor: grab;
+  touch-action: none;
+}
+
+.hero-tag.is-dragging {
+  cursor: grabbing;
+  opacity: 0.85;
+}
+
 .hero h1 {
   font-family: var(--font-sans);
   font-weight: 400;
@@ -623,59 +658,26 @@ a.group-head:hover {
   }
 }
 
+/* One quiet frame around the whole line, offset from the kicker above rather than sharing its
+   left edge, instead of three separate coloured pills. */
 .hero-meta {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 0.7rem 0.9rem;
-  margin: 1.8rem 0 0;
-  font-family: var(--sans);
+  align-items: baseline;
+  gap: 0.4rem 0.55rem;
+  margin: 2.25rem 0 0 2.5rem;
+  padding: 0.7em 1em;
+  border: 1px solid var(--ink);
+  font-family: var(--font-sans);
   font-size: 0.82rem;
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-}
-
-/* Each phrase sits in its own lopsided colour block, not strung along one plain line. */
-.hero-meta span:not(.dot) {
-  display: inline-block;
-  padding: 0.3em 0.6em 0.24em;
-  rotate: -1.2deg;
-}
-
-.hero-meta span:not(.dot):nth-of-type(1) {
-  background: var(--acid);
-  color: var(--paper);
-  border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%;
-  rotate: -1.6deg;
-}
-
-.hero-meta span:not(.dot):nth-of-type(3) {
-  background: var(--accent);
-  color: var(--paper);
-  border-radius: 40% 60% 45% 55% / 55% 40% 60% 45%;
-  rotate: 1.3deg;
-}
-
-.hero-meta span:not(.dot):nth-of-type(5) {
-  background: var(--ink);
-  color: var(--paper);
-  border-radius: 55% 45% 60% 40% / 40% 55% 45% 60%;
-  rotate: -0.8deg;
+  color: var(--ink);
 }
 
 .hero-meta .dot {
-  color: var(--accent);
-  animation: flash-pulse 2.6s steps(2, jump-none) infinite;
-}
-
-.hero-meta .dot:nth-of-type(4) {
-  animation-delay: 0.6s;
-}
-
-@keyframes flash-pulse {
-  0%, 40%, 100% { color: var(--accent); }
-  20% { color: var(--acid); }
+  color: var(--ink-soft);
 }
 
 .scroll-hint {

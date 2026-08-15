@@ -407,6 +407,75 @@
     });
   }
 
+  /** Hero only: the kicker tag and the meta line can be nudged a short distance from their
+      curated position. They stay in normal flow (position: relative), so dragging one never
+      reflows the H1 or anything else around it. */
+  function HeroTags() {
+    if (!("PointerEvent" in window)) return;
+    var tags = document.querySelectorAll(".hero-tag");
+    if (!tags.length) return;
+
+    tags.forEach(function (tag) {
+      var active = null;
+
+      tag.addEventListener("pointerdown", function (event) {
+        if (event.button > 0) return;
+        active = {
+          pointerId: event.pointerId,
+          startX: event.clientX,
+          startY: event.clientY,
+          originLeft: parseFloat(tag.dataset.dragLeft || "0"),
+          originTop: parseFloat(tag.dataset.dragTop || "0"),
+          dragging: false
+        };
+        tag.setPointerCapture(event.pointerId);
+      });
+
+      tag.addEventListener("pointermove", function (event) {
+        if (!active || event.pointerId !== active.pointerId) return;
+        var dx = event.clientX - active.startX;
+        var dy = event.clientY - active.startY;
+        if (!active.dragging && Math.hypot(dx, dy) > 6) {
+          active.dragging = true;
+          tag.classList.add("is-dragging");
+        }
+        if (active.dragging) {
+          event.preventDefault();
+          var left = active.originLeft + dx;
+          var top = active.originTop + dy;
+          tag.style.left = left + "px";
+          tag.style.top = top + "px";
+          tag.dataset.dragLeft = left;
+          tag.dataset.dragTop = top;
+        }
+      });
+
+      function release(event) {
+        if (!active || event.pointerId !== active.pointerId) return;
+        tag.classList.remove("is-dragging");
+        tag.dataset.justDragged = active.dragging ? "1" : "";
+        active = null;
+      }
+
+      tag.addEventListener("pointerup", release);
+      tag.addEventListener("pointercancel", release);
+
+      /* The kicker holds a real link (HfG Karlsruhe); a drag must not also follow it. Caught
+         here, in the capture phase, ahead of the link's own default navigation. */
+      tag.addEventListener(
+        "click",
+        function (event) {
+          if (tag.dataset.justDragged === "1") {
+            tag.dataset.justDragged = "";
+            event.preventDefault();
+            event.stopImmediatePropagation();
+          }
+        },
+        true
+      );
+    });
+  }
+
   function Lightbox() {
     if (typeof GLightbox !== "function") return;
     GLightbox({
@@ -435,6 +504,7 @@
     new Ember(toast);
     new Curtain();
     FreeformCollage();
+    HeroTags();
     Lightbox();
 
     this.frames = [new Spotlight(), new Magnet(), new Parallax()];
