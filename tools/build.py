@@ -678,6 +678,9 @@ TEMPLATE = """<!doctype html>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#1b1efa">
 <script>document.documentElement.className += " has-js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Instrument+Serif&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{glightbox_css}">
 <link rel="stylesheet" href="{css}">
 </head>

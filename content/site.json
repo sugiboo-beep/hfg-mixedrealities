@@ -9,11 +9,11 @@
   "source": "https://1019911-copy4.cargo.site",
   "intro": "A media art lab at the HfG Karlsruhe working across mixed realities, digital artefacts and speculative narrative. Seminars, field trips and exhibitions where fiction, technology and political history meet.",
   "headline_faces": {
-   "Mixed": "serif",
-   "Realities": "serif accent",
+   "Mixed": "sans",
+   "Realities": "sans accent",
    "and": "sans",
    "Digitalities": "serif accent",
-   "Lab": "sans"
+   "Lab": "serif"
   }
  },
  "nav": [
