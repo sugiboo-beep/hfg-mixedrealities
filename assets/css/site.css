@@ -23,8 +23,10 @@
   --accent: var(--green);
   --rule: rgba(0, 0, 0, 0.16);
 
-  /* One deliberate exception to the black/white/blue rule: left-nav hover only. */
-  --nav-hover: #d71920;
+  /* One deliberate exception to the black/white/blue rule: nav and footer link hover only.
+     Vivid green, tuned to 4.2:1 against the paper — true neon (e.g. #b6ff00) reads at barely
+     1.2:1 and all but disappears on white. */
+  --nav-hover: #0a8f3c;
 
   /* Space Grotesk carries ~90% of the interface; Instrument Serif is used selectively, on the
      hero's closing phrase and on artist/contributor-work names, never for UI chrome. */
@@ -460,6 +462,7 @@ a.group-head:hover {
 .group-list a:hover,
 .group-list a:focus-visible {
   color: var(--nav-hover);
+  font-weight: 500;
 }
 
 .rail-foot {
@@ -473,6 +476,21 @@ a.group-head:hover {
   text-transform: uppercase;
   color: var(--ink-soft);
   transition: opacity 0.35s var(--ease);
+}
+
+/* Same minimal hover as the left nav: colour and weight only, no highlighter blob. */
+.rail-foot a {
+  transition: color 0.15s ease-out;
+}
+
+.rail-foot a::after {
+  content: none;
+}
+
+.rail-foot a:hover,
+.rail-foot a:focus-visible {
+  color: var(--nav-hover);
+  font-weight: 500;
 }
 
 .sigil {
@@ -1144,6 +1162,21 @@ a.group-head:hover {
   line-height: 1.3;
   letter-spacing: 0.02em;
   color: var(--ink-soft);
+}
+
+/* Same minimal hover as the left nav: colour and weight only, no highlighter blob. */
+.colophon a {
+  transition: color 0.15s ease-out;
+}
+
+.colophon a::after {
+  content: none;
+}
+
+.colophon a:hover,
+.colophon a:focus-visible {
+  color: var(--nav-hover);
+  font-weight: 500;
 }
 
 /* ------------------------------------------------ reveal, cursor, misc */
