@@ -23,10 +23,8 @@
   --accent: var(--green);
   --rule: rgba(0, 0, 0, 0.16);
 
-  /* One deliberate exception to the black/white/blue rule: nav and footer link hover only.
-     Vivid green, tuned to 4.2:1 against the paper — true neon (e.g. #b6ff00) reads at barely
-     1.2:1 and all but disappears on white. */
-  --nav-hover: #0a8f3c;
+  /* One deliberate exception to the black/white/blue rule: nav and footer link hover only. */
+  --nav-hover: #b6ff00;
 
   /* Space Grotesk carries ~90% of the interface; Instrument Serif is used selectively, on the
      hero's closing phrase and on artist/contributor-work names, never for UI chrome. */
@@ -442,8 +440,9 @@ a.group-head:hover {
   margin-bottom: 0.2rem;
 }
 
-/* Minimal, quiet hover: colour only. The shared link-sweep highlighter blob is switched off
-   here so nothing else moves, fills or scales. */
+/* Quiet hover: colour and a couple of pixels of drift, as if the text were gently nudged into
+   place rather than pressed like a button. The shared link-sweep highlighter blob is switched
+   off here so nothing else moves, fills or scales. */
 .group-list a {
   display: block;
   font-family: var(--font-sans);
@@ -452,7 +451,7 @@ a.group-head:hover {
   line-height: 1.35;
   letter-spacing: 0.01em;
   color: var(--ink-soft);
-  transition: color 0.15s ease-out;
+  transition: color 0.25s ease-out, translate 0.25s ease-out;
 }
 
 .group-list a::after {
@@ -462,7 +461,28 @@ a.group-head:hover {
 .group-list a:hover,
 .group-list a:focus-visible {
   color: var(--nav-hover);
-  font-weight: 500;
+  translate: 3px 0;
+}
+
+/* A small, curated variation in the offset from one item to the next, not identical steps. */
+.group-list li:nth-child(4n + 1) a:hover,
+.group-list li:nth-child(4n + 1) a:focus-visible {
+  translate: 2px 0;
+}
+
+.group-list li:nth-child(4n + 2) a:hover,
+.group-list li:nth-child(4n + 2) a:focus-visible {
+  translate: 4px 0;
+}
+
+.group-list li:nth-child(4n + 3) a:hover,
+.group-list li:nth-child(4n + 3) a:focus-visible {
+  translate: 3px 0;
+}
+
+.group-list li:nth-child(4n + 4) a:hover,
+.group-list li:nth-child(4n + 4) a:focus-visible {
+  translate: 5px 0;
 }
 
 .rail-foot {
@@ -480,7 +500,7 @@ a.group-head:hover {
 
 /* Same minimal hover as the left nav: colour and weight only, no highlighter blob. */
 .rail-foot a {
-  transition: color 0.15s ease-out;
+  transition: color 0.25s ease-out, translate 0.25s ease-out;
 }
 
 .rail-foot a::after {
@@ -490,7 +510,7 @@ a.group-head:hover {
 .rail-foot a:hover,
 .rail-foot a:focus-visible {
   color: var(--nav-hover);
-  font-weight: 500;
+  translate: 3px 0;
 }
 
 .sigil {
@@ -1166,7 +1186,7 @@ a.group-head:hover {
 
 /* Same minimal hover as the left nav: colour and weight only, no highlighter blob. */
 .colophon a {
-  transition: color 0.15s ease-out;
+  transition: color 0.25s ease-out, translate 0.25s ease-out;
 }
 
 .colophon a::after {
@@ -1176,7 +1196,12 @@ a.group-head:hover {
 .colophon a:hover,
 .colophon a:focus-visible {
   color: var(--nav-hover);
-  font-weight: 500;
+  translate: 2px 0;
+}
+
+.colophon a:nth-of-type(2):hover,
+.colophon a:nth-of-type(2):focus-visible {
+  translate: 4px 0;
 }
 
 /* ------------------------------------------------ reveal, cursor, misc */
