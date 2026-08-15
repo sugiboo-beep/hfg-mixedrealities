@@ -336,6 +336,77 @@
     });
   }
 
+  /** Selected Works only: images can be dragged freely on the canvas. A real drag (past a small
+      threshold) suppresses the click that would otherwise open the lightbox, so a plain click
+      still opens it exactly as before; only motion beyond the threshold counts as a drag. */
+  function FreeformCollage() {
+    if (!("PointerEvent" in window)) return;
+    var containers = document.querySelectorAll(".collage-freeform");
+    if (!containers.length) return;
+
+    containers.forEach(function (container) {
+      var active = null;
+
+      container.addEventListener("pointerdown", function (event) {
+        if (event.button > 0) return;
+        var tile = event.target.closest(".tile");
+        if (!tile) return;
+        var rect = tile.getBoundingClientRect();
+        var hostRect = container.getBoundingClientRect();
+        active = {
+          tile: tile,
+          pointerId: event.pointerId,
+          startX: event.clientX,
+          startY: event.clientY,
+          originLeft: rect.left - hostRect.left,
+          originTop: rect.top - hostRect.top,
+          dragging: false
+        };
+        tile.setPointerCapture(event.pointerId);
+      });
+
+      container.addEventListener("pointermove", function (event) {
+        if (!active || event.pointerId !== active.pointerId) return;
+        var dx = event.clientX - active.startX;
+        var dy = event.clientY - active.startY;
+        if (!active.dragging && Math.hypot(dx, dy) > 6) {
+          active.dragging = true;
+          active.tile.classList.add("is-dragging");
+        }
+        if (active.dragging) {
+          event.preventDefault();
+          active.tile.style.left = active.originLeft + dx + "px";
+          active.tile.style.top = active.originTop + dy + "px";
+        }
+      });
+
+      function release(event) {
+        if (!active || event.pointerId !== active.pointerId) return;
+        active.tile.classList.remove("is-dragging");
+        active.tile.dataset.justDragged = active.dragging ? "1" : "";
+        active = null;
+      }
+
+      container.addEventListener("pointerup", release);
+      container.addEventListener("pointercancel", release);
+
+      /* Caught here, on the container, in the capture phase: this runs before GLightbox's own
+         click listener on the tile itself, regardless of which one was registered first. */
+      container.addEventListener(
+        "click",
+        function (event) {
+          var tile = event.target.closest(".tile");
+          if (tile && tile.dataset.justDragged === "1") {
+            tile.dataset.justDragged = "";
+            event.preventDefault();
+            event.stopImmediatePropagation();
+          }
+        },
+        true
+      );
+    });
+  }
+
   function Lightbox() {
     if (typeof GLightbox !== "function") return;
     GLightbox({
@@ -363,6 +434,7 @@
     new Unsettle(toast);
     new Ember(toast);
     new Curtain();
+    FreeformCollage();
     Lightbox();
 
     this.frames = [new Spotlight(), new Magnet(), new Parallax()];

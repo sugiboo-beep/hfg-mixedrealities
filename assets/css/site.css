@@ -837,6 +837,30 @@ a.group-head:hover {
   z-index: 70;
 }
 
+/* Selected Works only: a quiet, draggable canvas. Plain rectangles, no rotation, no hover lift
+   or shadow — the artwork is the whole point, not the frame around it. */
+.collage-freeform .tile {
+  border-radius: 0;
+  rotate: 0deg;
+  touch-action: none;
+  cursor: grab;
+}
+
+.collage-freeform .tile:hover {
+  translate: none;
+  scale: none;
+  box-shadow: none;
+  animation: none;
+  z-index: var(--z);
+}
+
+.collage-freeform .tile.is-dragging,
+.collage-freeform .tile:hover.is-dragging {
+  cursor: grabbing;
+  opacity: 0.85;
+  z-index: 999;
+}
+
 /* --------------------------------------------------------- index lists */
 
 .index-row {
@@ -1326,6 +1350,20 @@ a.group-head:hover {
     width: auto;
     margin-bottom: 1rem;
     break-inside: avoid;
+  }
+
+  /* Selected Works keeps its freeform canvas at every width, scaled by the same percentages
+     rather than collapsing into a stacked column like the (non-interactive) project collages. */
+  .collage-freeform {
+    padding-top: calc(var(--ff-h) * 1%);
+    columns: initial;
+    column-gap: 0;
+  }
+
+  .collage-freeform .tile {
+    position: absolute;
+    width: calc(var(--w) * 1%);
+    margin-bottom: 0;
   }
 
   .index-row {

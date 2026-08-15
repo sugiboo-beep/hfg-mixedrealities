@@ -296,8 +296,14 @@ class SiteBuilder:
         )
         return f'<div class="{layout}">\n{tiles}\n</div>'
 
-    def collage(self, page: Page, source: str, gallery: str, lanes: int = 3) -> str:
-        """Lay a page's images out as a packed freeform collage."""
+    def collage(self, page: Page, source: str, gallery: str, lanes: int = 3,
+                draggable: bool = False) -> str:
+        """Lay a page's images out as a packed freeform collage.
+
+        ``draggable`` marks only the home page's Selected Works canvas: a distinct class hooks
+        the plain-rectangle styling and the drag interaction in site.js, without touching the
+        tilted, non-interactive collage every project page also renders through this method.
+        """
         record = self.text.get(source, {})
         hashes = [h for h in record.get("images", []) if h in self.media]
         if len(hashes) < 3:
@@ -316,8 +322,9 @@ class SiteBuilder:
             tiles.append(
                 self.tile(page, item["hash"], gallery, captions.get(item["hash"]), style)
             )
+        classes = "collage collage-freeform" if draggable else "collage"
         return (
-            f'<div class="collage" style="--ff-h:{placement.height:.2f}" data-collage>\n'
+            f'<div class="{classes}" style="--ff-h:{placement.height:.2f}" data-collage>\n'
             + "\n".join(tiles)
             + "\n</div>"
         )
@@ -384,7 +391,7 @@ class SiteBuilder:
 
   <section class="shell band">
     {self.label('Selected works', 'Archive')}
-    {self.collage(page, 'home-page', 'home', lanes=2)}
+    {self.collage(page, 'home-page', 'home', lanes=2, draggable=True)}
     <p class="more reveal"><a class="link-inline" href="{page.url('gallery.html')}">Enter the full image archive &#8594;</a></p>
   </section>
 
