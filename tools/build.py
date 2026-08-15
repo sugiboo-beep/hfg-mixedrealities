@@ -227,7 +227,7 @@ class SiteBuilder:
         stack = "".join(f"<span>{esc(w)}</span>" for w in words)
 
         return f"""<button class="rail-toggle" type="button" aria-expanded="true" aria-controls="rail" aria-label="Toggle navigation">
-  <span class="bar"></span><span class="bar"></span>
+  <span class="toggle-label toggle-label-close">Close</span><span class="toggle-label toggle-label-menu">Menu</span>
 </button>
 <aside class="rail" id="rail">
   <a class="wordmark" href="{page.url('index.html')}">{stack}</a>
