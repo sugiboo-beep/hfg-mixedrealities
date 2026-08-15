@@ -280,10 +280,12 @@ class SiteBuilder:
                 out.append(f'<p class="reveal">{body}</p>')
         return "\n".join(out)
 
-    def tile(self, page: Page, media_hash: str, gallery: str, caption=None, style="", extra="") -> str:
+    def tile(self, page: Page, media_hash: str, gallery: str, caption=None, style="", extra="",
+             reveal: bool = True) -> str:
         cap = caption or self.media.caption(media_hash)
         width, height = self.media.size(media_hash)
-        return f"""<a class="tile glightbox reveal" href="{page.url(self.media.full(media_hash))}"
+        classes = "tile glightbox reveal" if reveal else "tile glightbox"
+        return f"""<a class="{classes}" href="{page.url(self.media.full(media_hash))}"
    data-gallery="{gallery}" data-title="{esc(cap)}"{style}{extra}>
   <img src="{page.url(self.media.thumb(media_hash))}" alt="{esc(cap)}" loading="lazy" width="{width}" height="{height}" draggable="false">
   <span class="tile-cap">{esc(cap)}</span>
@@ -320,7 +322,8 @@ class SiteBuilder:
                 f'--w:{item["w"]};--z:{item["z"]};--tilt:{item["tilt"]}deg"'
             )
             tiles.append(
-                self.tile(page, item["hash"], gallery, captions.get(item["hash"]), style)
+                self.tile(page, item["hash"], gallery, captions.get(item["hash"]), style,
+                          reveal=not draggable)
             )
         classes = "collage collage-freeform" if draggable else "collage"
         return (
