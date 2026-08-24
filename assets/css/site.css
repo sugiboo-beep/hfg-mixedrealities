@@ -840,6 +840,12 @@ a.group-head:hover {
   opacity: 1;
 }
 
+/* Selected Works only: every image stays fully visible regardless of where the cursor is. */
+.collage-freeform:hover .tile,
+.collage-freeform:hover .tile:hover {
+  opacity: 1;
+}
+
 .tile-cap {
   position: absolute;
   inset-inline: 0;
