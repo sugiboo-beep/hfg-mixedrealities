@@ -1026,7 +1026,7 @@ a.group-head:hover {
   overflow: hidden;
   aspect-ratio: 4 / 3;
   background: var(--paper-deep);
-  border-radius: 12px;
+  border-radius: 0;
 }
 
 .card-work img {
