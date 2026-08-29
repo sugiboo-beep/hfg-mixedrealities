@@ -472,24 +472,19 @@ class SiteBuilder:
             visual = self.label("Images", "&#8212;") + self.placeholder()
 
         works = ""
-        if project.get("works_source"):
-            linked = self.text.get(project["works_source"], {})
-            caps = linked.get("captions", {})
-            cards = []
-            for h, target in linked.get("links", {}).items():
-                work = next((w for w in self.site["works"] if w["slug"] == target), None)
-                if h not in self.media or not work:
-                    continue
-                cards.append(
-                    f"""<a class="card-work reveal" href="{page.url('works/' + work['slug'] + '.html')}" data-tilt>
-  <span class="frame"><img src="{page.url(self.media.thumb(h))}" alt="{esc(caps.get(h, work['author']))}" loading="lazy"></span>
-  <span class="meta"><span class="by">{esc(work['author'])}</span><span class="name" data-scramble>{esc(work['title'])}</span></span>
+        project_works = [w for w in self.site["works"] if w.get("project") == slug]
+        cards = [
+            f"""<a class="card-work reveal" href="{page.url('works/' + w['slug'] + '.html')}" data-tilt>
+  <span class="frame"><img src="{page.url(self.media.thumb(w['cover']))}" alt="{esc(w['title'])}" loading="lazy"></span>
+  <span class="meta"><span class="by">{esc(w['author'])}</span><span class="name" data-scramble>{esc(w['title'])}</span></span>
 </a>"""
-                )
-            if cards:
-                works = f"""<section class="shell band">
+            for w in project_works if w["cover"] in self.media
+        ]
+        if cards:
+            intro = project.get("works_intro", "Contributions from students in the seminar.")
+            works = f"""<section class="shell band">
   {self.label('Contributions', str(len(cards)))}
-  <p class="lede reveal">{esc(project['works_intro'])}</p>
+  <p class="lede reveal">{esc(intro)}</p>
   <div class="cards">{''.join(cards)}</div>
 </section>"""
 
