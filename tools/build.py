@@ -522,6 +522,14 @@ class SiteBuilder:
         else:
             text_class, aside = "c-8 c-centre", ""
 
+        link_line = ""
+        if work.get("link"):
+            label = esc(work.get("link_label") or "View the contribution")
+            link_line = (
+                f'<p class="more reveal"><a class="link-inline" href="{esc(work["link"])}" '
+                f'target="_blank" rel="noopener">{label} &#8594;</a></p>'
+            )
+
         body = f"""<main>
   <section class="page-head shell">
     <p class="kicker reveal"><a class="link-inline" href="{page.url('projects/' + parent['slug'] + '.html')}">{esc(parent['title'])}</a></p>
@@ -530,7 +538,7 @@ class SiteBuilder:
   </section>
   <section class="shell">
     <div class="cols">
-      <div class="{text_class}"><div class="prose">{self.prose(source, skip=work.get('skip', 2))}</div></div>
+      <div class="{text_class}"><div class="prose">{self.prose(source, skip=work.get('skip', 2))}</div>{link_line}</div>
       {aside}
     </div>
   </section>
