@@ -762,7 +762,7 @@ a.group-head:hover {
   position: relative;
   overflow: hidden;
   background: var(--paper-deep);
-  border-radius: 12px;
+  border-radius: 0;
   /* rotate, translate and scale are separate properties, so the resting tilt, the lift and the
      wiggle can each be driven independently without one overwriting the others. */
   rotate: calc(var(--tilt, 0deg) + var(--chaos, 0deg));
