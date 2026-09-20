@@ -723,6 +723,11 @@ a.group-head:hover {
   color: var(--ink);
 }
 
+/* The landing-page tag is a lowercase keyword line; work pages keep the uppercase author line. */
+.hero .hero-meta {
+  text-transform: none;
+}
+
 .hero-meta .dot {
   color: var(--ink-soft);
 }
