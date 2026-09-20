@@ -388,13 +388,15 @@ class SiteBuilder:
         )
 
         inst = meta["institution"]
+        line = "&#8734;&#8226;&#8734; worldbuilding &#8734;&#8226;&#8734; queer computing &#8734;&#8226;&#8734; ecologix &#8734;&#8226;&#8734; solidarity infrastructures &#8734;&#8226;&#8734;"
+        # Two identical groups of copies: the track slides left by exactly one group, then loops seamlessly.
+        group = "".join(f'<span class="ticker-item">{line}</span>' for _ in range(4))
+        ticker = f'<div class="ticker-track" aria-hidden="true"><div class="ticker-group">{group}</div><div class="ticker-group">{group}</div></div>'
         body = f"""<main>
   <section class="hero shell">
     <p class="kicker mark hero-tag reveal">{esc(meta['tagline'])} &#183; <a class="link-inline" href="{esc(inst['url'])}" target="_blank" rel="noopener">{esc(inst['label'])}</a></p>
     <h1 data-parallax="0.12">{headline}</h1>
-    <div class="hero-meta hero-tag">
-      <span>&#8734;&#8226;&#8734; worldbuilding &#8734;&#8226;&#8734; queer computing &#8734;&#8226;&#8734; ecologix &#8734;&#8226;&#8734; solidarity infrastructures &#8734;&#8226;&#8734;</span>
-    </div>
+    <div class="hero-ticker" role="text" aria-label="worldbuilding, queer computing, ecologix, solidarity infrastructures">{ticker}</div>
     <p class="lede reveal">{esc(meta['intro'])}</p>
     <p class="scroll-hint reveal"><span>Scroll</span></p>
   </section>

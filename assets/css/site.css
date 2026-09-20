@@ -730,9 +730,41 @@ a.group-head:hover {
   color: var(--ink);
 }
 
-/* The landing-page tag is a lowercase keyword line; work pages keep the uppercase author line. */
-.hero .hero-meta {
-  text-transform: none;
+/* Landing-page keyword line: no frame, just a lowercase ticker that slowly slides and loops. It
+   keeps moving on phones too; only an explicit reduced-motion preference holds it still. */
+.hero-ticker {
+  margin: 1.25rem 0 0;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1.6;
+  white-space: nowrap;
+  color: var(--ink);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-slide 70s linear infinite;
+}
+
+.ticker-group {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.ticker-item {
+  padding-right: 1.5em;
+}
+
+@keyframes ticker-slide {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .hero-meta .dot {
@@ -1670,6 +1702,14 @@ a.group-head:hover {
 
   .spotlight,
   .curtain {
+    display: none;
+  }
+
+  .ticker-track {
+    animation: none;
+  }
+
+  .ticker-group + .ticker-group {
     display: none;
   }
 }
