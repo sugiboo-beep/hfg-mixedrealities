@@ -394,7 +394,7 @@ class SiteBuilder:
         ticker = f'<div class="ticker-track" aria-hidden="true"><div class="ticker-group">{group}</div><div class="ticker-group">{group}</div></div>'
         body = f"""<main>
   <section class="hero shell">
-    <p class="kicker mark hero-tag reveal">{esc(meta['tagline'])} &#183; <a class="link-inline" href="{esc(inst['url'])}" target="_blank" rel="noopener">{esc(inst['label'])}</a></p>
+    <p class="kicker mark reveal">{esc(meta['tagline'])} &#183; <a class="link-inline" href="{esc(inst['url'])}" target="_blank" rel="noopener">{esc(inst['label'])}</a></p>
     <h1 data-parallax="0.12">{headline}</h1>
     <div class="hero-ticker" role="text" aria-label="worldbuilding, queer computing, ecologix, solidarity infrastructures">{ticker}</div>
     <p class="lede reveal">{esc(meta['intro'])}</p>

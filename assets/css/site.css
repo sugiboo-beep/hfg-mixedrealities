@@ -648,19 +648,6 @@ a.group-head:hover {
   border-color: color-mix(in srgb, var(--ink) 45%, transparent);
 }
 
-/* Both hero text objects can be nudged a short distance from their curated position; the rest
-   of the hero never reflows around them since they stay in normal flow, just shifted visually. */
-.hero-tag {
-  position: relative;
-  cursor: grab;
-  touch-action: none;
-}
-
-.hero-tag.is-dragging {
-  cursor: grabbing;
-  opacity: 0.85;
-}
-
 .hero h1 {
   font-family: var(--font-sans);
   font-weight: 400;
