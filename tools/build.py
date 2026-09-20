@@ -465,13 +465,13 @@ class SiteBuilder:
 
         collage = self.collage(page, source, slug, lanes=2)
         if collage:
-            visual = self.label("Images", str(len(images))) + collage
+            visual = collage
         elif images:
-            visual = self.label("Images", str(len(images))) + self.gallery(
+            visual = self.gallery(
                 page, images, slug, captions=record.get("captions", {})
             )
         else:
-            visual = self.label("Images", "&#8212;") + self.placeholder()
+            visual = self.placeholder()
 
         works = ""
         project_works = [w for w in self.site["works"] if w.get("project") == slug]
