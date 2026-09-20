@@ -286,6 +286,13 @@ h1, h2, h3 {
   margin-bottom: clamp(1.75rem, 3.5vw, 3rem);
 }
 
+/* A label used on its own (no content below it), so no dotted rule and no reserved space. */
+.section-label.section-label-bare {
+  background-image: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
 /* --------------------------------------------------------------- links */
 
 a {
