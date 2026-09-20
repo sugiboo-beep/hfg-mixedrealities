@@ -85,21 +85,8 @@
   },
   {
    "label": "Events",
-   "href": null,
-   "children": [
-    {
-     "label": "Exhibitions",
-     "href": "events/exhibitions.html"
-    },
-    {
-     "label": "Rundgang",
-     "href": "events/rundgang.html"
-    },
-    {
-     "label": "Festivals",
-     "href": "events/festivals.html"
-    }
-   ]
+   "href": "events/index.html",
+   "children": []
   },
   {
    "label": "Gallery",
@@ -221,19 +208,22 @@
    "slug": "events/exhibitions",
    "source": "exhibitions",
    "title": "Exhibitions",
-   "group": "Events"
+   "group": "Events",
+   "blurb": "Group and solo shows where seminar work leaves the classroom and meets an audience."
   },
   {
    "slug": "events/rundgang",
    "source": "rundgang",
    "title": "Rundgang",
-   "group": "Events"
+   "group": "Events",
+   "blurb": "The open studio weekend at HfG Karlsruhe: works in progress and finished pieces, shown in person."
   },
   {
    "slug": "events/festivals",
    "source": "festivals",
    "title": "Festivals",
-   "group": "Events"
+   "group": "Events",
+   "blurb": "Screenings, talks and presentations at festivals and partner institutions."
   }
  ],
  "captions": {

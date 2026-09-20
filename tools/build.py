@@ -360,6 +360,7 @@ class SiteBuilder:
             self.build_work(work)
         for section in self.site["sections"]:
             self.build_section(section)
+        self.build_events_index()
         self.build_legal()
 
     def build_home(self) -> None:
@@ -570,6 +571,29 @@ class SiteBuilder:
     </div>
   </section>
   <section class="shell band">{self.pager(page, 'sections', section['slug'])}</section>
+</main>"""
+        page.write(body)
+
+    def build_events_index(self) -> None:
+        page = Page(self, "events/index.html", "Events",
+                    "Exhibitions, Rundgang and festivals of the lab.", "pink")
+        events = [s for s in self.site["sections"] if s["group"] == "Events"]
+        rows = "".join(
+            f"""<a class="index-row reveal" href="{page.url(s['slug'] + '.html')}">
+  <span class="num">{i:02d}</span>
+  <span class="name"><span data-scramble>{esc(s['title'])}</span></span>
+  <span class="blurb">{esc(s.get('blurb', ''))}</span>
+  <span class="go">&#8594;</span>
+</a>"""
+            for i, s in enumerate(events, start=1)
+        )
+        body = f"""<main>
+  <section class="page-head shell">
+    <p class="kicker mark reveal">Index</p>
+    <h1 class="reveal">Events</h1>
+    <p class="lede reveal">Where the lab's work is shown: exhibitions, the Rundgang and festivals.</p>
+  </section>
+  <section class="shell band"><div class="index-list">{rows}</div></section>
 </main>"""
         page.write(body)
 
