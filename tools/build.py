@@ -173,8 +173,6 @@ class Page:
             favicon=self.url("assets/img/meta/favicon.svg"),
             thumbnail=self.url("assets/img/meta/thumbnail.png"),
             css=self.asset("assets/css/site.css"),
-            glightbox_css=self.asset("assets/vendor/glightbox/glightbox.min.css"),
-            glightbox_js=self.asset("assets/vendor/glightbox/glightbox.min.js"),
             js=self.asset("assets/js/site.js"),
             header=self.builder.header(self),
             body=body,
@@ -292,12 +290,12 @@ class SiteBuilder:
              reveal: bool = True) -> str:
         cap = caption or self.media.caption(media_hash)
         width, height = self.media.size(media_hash)
-        classes = "tile glightbox reveal" if reveal else "tile glightbox"
-        return f"""<a class="{classes}" href="{page.url(self.media.full(media_hash))}"
-   data-gallery="{gallery}" data-title="{esc(cap)}"{style}{extra}>
+        classes = "tile reveal" if reveal else "tile"
+        # A plain figure, not a link: images are display-only and never open at full size.
+        return f"""<figure class="{classes}"{style}{extra}>
   <img src="{page.url(self.media.thumb(media_hash))}" alt="{esc(cap)}" loading="lazy" width="{width}" height="{height}" draggable="false">
-  <span class="tile-cap">{esc(cap)}</span>
-</a>"""
+  <figcaption class="tile-cap">{esc(cap)}</figcaption>
+</figure>"""
 
     def gallery(self, page: Page, hashes: list[str], gallery: str, layout: str = "gallery", captions=None) -> str:
         captions = captions or {}
@@ -771,7 +769,6 @@ TEMPLATE = """<!doctype html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Instrument+Serif&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{glightbox_css}">
 <link rel="stylesheet" href="{css}">
 </head>
 <body class="{body_class}">
@@ -783,7 +780,6 @@ TEMPLATE = """<!doctype html>
 {footer}
 </div>
 <div class="toast" role="status" aria-live="polite"></div>
-<script src="{glightbox_js}"></script>
 <script src="{js}"></script>
 </body>
 </html>

@@ -23,6 +23,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Leave out full-size originals
+        # Images are display-only on the site; the full-size files are never linked, so don't publish them.
+        run: rm -rf assets/img/full
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

@@ -315,7 +315,7 @@
     document.addEventListener("click", function (event) {
       var link = event.target.closest("a");
       if (!link || event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey) return;
-      if (link.target === "_blank" || link.classList.contains("glightbox")) return;
+      if (link.target === "_blank") return;
 
       var url = link.getAttribute("href") || "";
       if (!url || url.charAt(0) === "#" || /^[a-z]+:/i.test(url)) return;
@@ -336,9 +336,8 @@
     });
   }
 
-  /** Selected Works only: images can be dragged freely on the canvas. A real drag (past a small
-      threshold) suppresses the click that would otherwise open the lightbox, so a plain click
-      still opens it exactly as before; only motion beyond the threshold counts as a drag. */
+  /** Selected Works only: images can be dragged freely on the canvas. Motion beyond a small
+      threshold counts as a drag; the images are display-only and open nothing. */
   function FreeformCollage() {
     if (!("PointerEvent" in window)) return;
     var containers = document.querySelectorAll(".collage-freeform");
@@ -383,27 +382,11 @@
       function release(event) {
         if (!active || event.pointerId !== active.pointerId) return;
         active.tile.classList.remove("is-dragging");
-        active.tile.dataset.justDragged = active.dragging ? "1" : "";
         active = null;
       }
 
       container.addEventListener("pointerup", release);
       container.addEventListener("pointercancel", release);
-
-      /* Caught here, on the container, in the capture phase: this runs before GLightbox's own
-         click listener on the tile itself, regardless of which one was registered first. */
-      container.addEventListener(
-        "click",
-        function (event) {
-          var tile = event.target.closest(".tile");
-          if (tile && tile.dataset.justDragged === "1") {
-            tile.dataset.justDragged = "";
-            event.preventDefault();
-            event.stopImmediatePropagation();
-          }
-        },
-        true
-      );
     });
   }
 
@@ -435,20 +418,6 @@
     });
   }
 
-  function Lightbox() {
-    if (typeof GLightbox !== "function") return;
-    GLightbox({
-      selector: ".glightbox",
-      touchNavigation: true,
-      loop: true,
-      openEffect: "fade",
-      closeEffect: "fade",
-      slideEffect: "fade",
-      zoomable: true,
-      descPosition: "bottom"
-    });
-  }
-
   /* --------------------------------------------------------------- app */
 
   function Site() {
@@ -464,7 +433,6 @@
     new Curtain();
     FreeformCollage();
     Promo();
-    Lightbox();
 
     this.frames = [new Spotlight(), new Magnet(), new Parallax()];
     this.tick();
