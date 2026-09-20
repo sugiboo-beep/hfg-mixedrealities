@@ -669,7 +669,6 @@ class SiteBuilder:
     <p class="lede reveal">Every image held across the lab's pages, in one gallery. Select any frame to open it full size.</p>
   </section>
   <section class="shell band">
-    {self.label('All images', f'{len(hashes)} frames')}
     {self.gallery(page, hashes, "archive")}
   </section>
 </main>"""
