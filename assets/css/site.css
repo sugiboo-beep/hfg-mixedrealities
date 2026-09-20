@@ -1169,7 +1169,7 @@ a.group-head:hover {
 
 .foot-cols {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
   gap: 2rem;
 }
 

@@ -249,6 +249,11 @@ class SiteBuilder:
         for entry in self.site["nav"]:
             children = entry.get("children") or []
             if not children:
+                # A top-level link with nothing beneath it (Events, Image archive): the heading is the link.
+                if entry.get("href"):
+                    cols.append(
+                        f'<div><h3><a class="link-sweep" href="{page.url(entry["href"])}">{esc(entry["label"])}</a></h3></div>'
+                    )
                 continue
             links = "".join(
                 f'<li><a class="link-sweep" href="{page.url(c["href"])}">{esc(c["label"])}</a></li>'
