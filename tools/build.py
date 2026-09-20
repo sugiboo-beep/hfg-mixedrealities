@@ -211,7 +211,7 @@ class SiteBuilder:
                     f'<span data-scramble>{label}</span></a>'
                 )
             else:
-                head = f'<span class="group-head">{label}</span>'
+                head = f'<span class="group-head"><span data-scramble>{label}</span></span>'
             link_items = []
             for c in children:
                 current = ' aria-current="page"' if c["href"] == page.path else ""
