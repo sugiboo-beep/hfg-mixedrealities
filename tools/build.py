@@ -404,8 +404,7 @@ class SiteBuilder:
   </section>
 
   <section class="shell band">
-    {self.label('explore all the projects')}
-    {self.project_index(page)}
+    <div class="section-label reveal"><a class="link-inline" href="{page.url('projects/index.html')}">explore all the projects</a></div>
   </section>
 </main>"""
         page.write(body)
