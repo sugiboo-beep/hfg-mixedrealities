@@ -1178,9 +1178,9 @@ a {
 }
 
 .foot-cols {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-  gap: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem clamp(1.25rem, 2.5vw, 2.5rem);
 }
 
 .foot-cols h3 {

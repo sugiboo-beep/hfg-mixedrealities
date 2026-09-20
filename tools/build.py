@@ -364,6 +364,8 @@ class SiteBuilder:
         for section in self.site["sections"]:
             self.build_section(section)
         self.build_events_index()
+        self.build_about()
+        self.build_info()
         self.build_legal()
 
     def build_home(self) -> None:
@@ -566,7 +568,7 @@ class SiteBuilder:
     def build_section(self, section: dict) -> None:
         source = section["source"]
         record = self.text.get(source, {})
-        hues = {"Research": "blue", "People": "violet", "Events": "pink"}
+        hues = {"Forms of Research": "blue", "People": "violet", "Events": "pink"}
         page = Page(self, f"{section['slug']}.html", section["title"],
                     f"{section['title']} — {section['group']}", hues.get(section["group"], "green"))
         images = [h for h in record.get("images", []) if h in self.media] or [
@@ -650,8 +652,42 @@ class SiteBuilder:
 </main>"""
         page.write(body)
 
+    def build_about(self) -> None:
+        meta = self.site["meta"]
+        page = Page(self, "digitalities-lab.html", "Digitalities Lab", meta["intro"], "green")
+        body = f"""<main>
+  <section class="page-head shell">
+    <p class="kicker mark reveal">About</p>
+    <h1 class="reveal">Digitalities Lab</h1>
+    <p class="lede reveal">{esc(meta['intro'])}</p>
+  </section>
+</main>"""
+        page.write(body)
+
+    def build_info(self) -> None:
+        page = Page(self, "info.html", "Info", "Legal information and privacy for this site.", "green")
+        rows = "".join(
+            f"""<a class="index-row reveal" href="{page.url(href)}">
+  <span class="num">{i:02d}</span>
+  <span class="name"><span data-scramble>{title}</span></span>
+  <span class="blurb">{blurb}</span>
+  <span class="go">&#8594;</span>
+</a>"""
+            for i, (href, title, blurb) in enumerate(
+                [("impressum.html", "Impressum", "Legal notice."),
+                 ("datenschutz.html", "Datenschutz", "Privacy policy.")], start=1)
+        )
+        body = f"""<main>
+  <section class="page-head shell">
+    <p class="kicker mark reveal">Info</p>
+    <h1 class="reveal">Info</h1>
+  </section>
+  <section class="shell band"><div class="index-list">{rows}</div></section>
+</main>"""
+        page.write(body)
+
     def build_gallery(self) -> None:
-        page = Page(self, "gallery.html", "Image archive",
+        page = Page(self, "gallery.html", "Image Archive",
                     "Every image held by the lab's site, in one gallery.", "amber")
         seen, hashes = set(), []
         for record in self.library:
@@ -663,7 +699,7 @@ class SiteBuilder:
         body = f"""<main>
   <section class="page-head shell">
     <p class="kicker mark reveal">Archive</p>
-    <h1 class="reveal">Image archive</h1>
+    <h1 class="reveal">Image Archive</h1>
     <p class="lede reveal">Every image held across the lab's pages, in one gallery. Select any frame to open it full size.</p>
   </section>
   <section class="shell band">

@@ -52,7 +52,12 @@
    ]
   },
   {
-   "label": "Research",
+   "label": "Digitalities Lab",
+   "href": "digitalities-lab.html",
+   "children": []
+  },
+  {
+   "label": "Forms of Research",
    "href": null,
    "children": [
     {
@@ -64,6 +69,11 @@
      "href": "research/cooperations.html"
     }
    ]
+  },
+  {
+   "label": "Events",
+   "href": "events/index.html",
+   "children": []
   },
   {
    "label": "People",
@@ -84,12 +94,12 @@
    ]
   },
   {
-   "label": "Events",
-   "href": "events/index.html",
+   "label": "Info",
+   "href": "info.html",
    "children": []
   },
   {
-   "label": "Image archive",
+   "label": "Image Archive",
    "href": "gallery.html",
    "children": []
   }
@@ -178,13 +188,13 @@
    "slug": "research/publications",
    "source": "publications",
    "title": "Publications",
-   "group": "Research"
+   "group": "Forms of Research"
   },
   {
    "slug": "research/cooperations",
    "source": "cooperations",
    "title": "Cooperations",
-   "group": "Research"
+   "group": "Forms of Research"
   },
   {
    "slug": "people/students",
