@@ -582,8 +582,9 @@ class SiteBuilder:
             text_class, aside = "c-8", ""
 
         if section.get("names"):
+            # No scroll-fade here: the names should always be visible, even if the observer never fires.
             items = "".join(f"<li>{esc(n)}</li>" for n in section["names"])
-            content = f'<ul class="name-list reveal">{items}</ul>'
+            content = f'<ul class="name-list">{items}</ul>'
         else:
             content = f"""<div class="cols">
       <div class="{text_class}"><div class="prose">{prose}</div></div>
