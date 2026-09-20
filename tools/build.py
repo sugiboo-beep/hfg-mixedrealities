@@ -404,7 +404,7 @@ class SiteBuilder:
   </section>
 
   <section class="shell band">
-    {self.label('Projects', f"{len(self.site['projects'])} entries")}
+    {self.label('explore all the projects')}
     {self.project_index(page)}
   </section>
 </main>"""
