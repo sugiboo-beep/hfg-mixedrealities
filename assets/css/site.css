@@ -1180,24 +1180,10 @@ a {
 .foot-cols {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem clamp(1.25rem, 2.5vw, 2.5rem);
-}
-
-/* Where the seven columns no longer fit on one row, switch to equal-width columns so the margin
-   between items is identical in every row instead of ragged. */
-@media (max-width: 1200px) {
-  .foot-cols {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 2rem;
-  }
-}
-
-@media (max-width: 560px) {
-  .foot-cols {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2rem 1.25rem;
-  }
+  align-items: flex-start;
+  /* One value for both axes: columns hug their text, so the gap between any two neighbouring
+     items is exactly this, in every row and at every width. */
+  gap: 2rem;
 }
 
 .foot-cols h3 {
