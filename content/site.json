@@ -58,17 +58,8 @@
   },
   {
    "label": "Forms of Research",
-   "href": null,
-   "children": [
-    {
-     "label": "Publications",
-     "href": "research/publications.html"
-    },
-    {
-     "label": "Cooperations",
-     "href": "research/cooperations.html"
-    }
-   ]
+   "href": "research/index.html",
+   "children": []
   },
   {
    "label": "Events",
@@ -184,18 +175,6 @@
   }
  ],
  "sections": [
-  {
-   "slug": "research/publications",
-   "source": "publications",
-   "title": "Publications",
-   "group": "Forms of Research"
-  },
-  {
-   "slug": "research/cooperations",
-   "source": "cooperations",
-   "title": "Cooperations",
-   "group": "Forms of Research"
-  },
   {
    "slug": "people/students",
    "source": "students",
