@@ -581,16 +581,22 @@ class SiteBuilder:
         else:
             text_class, aside = "c-8", ""
 
+        if section.get("names"):
+            items = "".join(f"<li>{esc(n)}</li>" for n in section["names"])
+            content = f'<ul class="name-list reveal">{items}</ul>'
+        else:
+            content = f"""<div class="cols">
+      <div class="{text_class}"><div class="prose">{prose}</div></div>
+      {aside}
+    </div>"""
+
         body = f"""<main>
   <section class="page-head shell">
     <p class="kicker mark reveal">{esc(section['group'])}</p>
     <h1 class="reveal">{esc(section['title'])}</h1>
   </section>
   <section class="shell">
-    <div class="cols">
-      <div class="{text_class}"><div class="prose">{prose}</div></div>
-      {aside}
-    </div>
+    {content}
   </section>
   <section class="shell band">{self.pager(page, 'sections', section['slug'])}</section>
 </main>"""

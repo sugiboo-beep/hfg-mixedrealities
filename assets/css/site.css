@@ -1531,6 +1531,24 @@ a {
   }
 }
 
+/* ------------------------------------------------------------ name list */
+
+/* A plain alphabetical roll of names (People pages), flowing into as many columns as fit. */
+.name-list {
+  columns: 3 16rem;
+  column-gap: clamp(1.5rem, 4vw, 4rem);
+  font-family: var(--font-sans);
+  font-size: var(--text-lead);
+  line-height: var(--lh-body);
+  letter-spacing: var(--tracking-body);
+}
+
+.name-list li {
+  break-inside: avoid;
+  padding-block: 0.35rem;
+  border-top: 1px solid var(--rule);
+}
+
 /* ---------------------------------------------------------------- promo */
 
 /* Landing-page announcement: a small square card, top right, so it never covers the hero copy
