@@ -387,9 +387,7 @@ class SiteBuilder:
     <p class="kicker mark hero-tag reveal">{esc(meta['tagline'])} &#183; <a class="link-inline" href="{esc(inst['url'])}" target="_blank" rel="noopener">{esc(inst['label'])}</a></p>
     <h1 data-parallax="0.12">{headline}</h1>
     <div class="hero-meta hero-tag">
-      <span>Media Art</span><span class="dot">&#183;</span>
-      <span>Karlsruhe</span><span class="dot">&#183;</span>
-      <span>Seminars &amp; Field Work</span>
+      <span>&#8734;&#8226;&#8734; worldbuilding &#8734;&#8226;&#8734; queer computing &#8734;&#8226;&#8734; ecologix &#8734;&#8226;&#8734; solidarity infrastructures &#8734;&#8226;&#8734;</span>
     </div>
     <p class="lede reveal">{esc(meta['intro'])}</p>
     <p class="scroll-hint reveal"><span>Scroll</span></p>
