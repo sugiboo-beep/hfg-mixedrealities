@@ -412,8 +412,23 @@ class SiteBuilder:
   <section class="shell band">
     <div class="section-label section-label-bare reveal"><a class="link-inline" href="{page.url('projects/index.html')}">explore all the projects</a></div>
   </section>
+{self.promo(page)}
 </main>"""
         page.write(body)
+
+    def promo(self, page: Page) -> str:
+        """The landing-page pop-up that promotes current and upcoming events (see ``announcement``)."""
+        note = self.site.get("announcement")
+        if not note or not note.get("enabled"):
+            return ""
+        return f"""<aside class="promo" data-promo-id="{esc(note['id'])}" aria-label="Announcement" hidden>
+  <a class="promo-link" href="{page.url(note['href'])}">
+    <span class="promo-kicker">{esc(note['kicker'])}</span>
+    <span class="promo-text">{esc(note['text'])}</span>
+    <span class="promo-go" aria-hidden="true">&#8594;</span>
+  </a>
+  <button class="promo-close" type="button" aria-label="Dismiss announcement">&#215;</button>
+</aside>"""
 
     def project_index(self, page: Page) -> str:
         rows = []
@@ -579,6 +594,25 @@ class SiteBuilder:
 </main>"""
         page.write(body)
 
+    def upcoming_list(self, page: Page) -> str:
+        items = self.site.get("upcoming") or []
+        if not items:
+            return '<p class="lede reveal">Nothing is scheduled right now. Check back soon.</p>'
+        out = []
+        for e in items:
+            meta = " &#183; ".join(esc(x) for x in (e.get("date"), e.get("place")) if x)
+            link = ""
+            if e.get("link"):
+                label = esc(e.get("link_label") or "More information")
+                link = (f'<p class="event-link"><a class="link-inline" href="{esc(e["link"])}" '
+                        f'target="_blank" rel="noopener">{label} &#8594;</a></p>')
+            blurb = f'<p class="event-blurb">{esc(e["blurb"])}</p>' if e.get("blurb") else ""
+            out.append(
+                f'<article class="event reveal"><p class="event-meta">{meta}</p>'
+                f'<h2 class="event-title">{esc(e["title"])}</h2>{blurb}{link}</article>'
+            )
+        return f'<div class="event-list">{"".join(out)}</div>'
+
     def build_events_index(self) -> None:
         page = Page(self, "events/index.html", "Events",
                     "Exhibitions, Rundgang and festivals of the lab.", "pink")
@@ -598,7 +632,14 @@ class SiteBuilder:
     <h1 class="reveal">Events</h1>
     <p class="lede reveal">Where the lab's work is shown: exhibitions, the Rundgang and festivals.</p>
   </section>
-  <section class="shell band"><div class="index-list">{rows}</div></section>
+  <section class="shell band" id="upcoming">
+    {self.label('Current &amp; upcoming')}
+    {self.upcoming_list(page)}
+  </section>
+  <section class="shell band">
+    {self.label('Browse by kind')}
+    <div class="index-list">{rows}</div>
+  </section>
 </main>"""
         page.write(body)
 

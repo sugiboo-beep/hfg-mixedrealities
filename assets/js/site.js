@@ -476,6 +476,34 @@
     });
   }
 
+  /** Landing page: a small, dismissible pop-up promoting current and upcoming events. Dismissal is
+      remembered per announcement id, so changing the id in site.json brings it back for everyone. */
+  function Promo() {
+    var el = document.querySelector(".promo");
+    if (!el) return;
+
+    var key = "promo-dismissed:" + el.getAttribute("data-promo-id");
+    try {
+      if (localStorage.getItem(key)) return;
+    } catch (e) {}
+
+    setTimeout(function () {
+      el.hidden = false;
+      void el.offsetWidth; // commit the un-hidden state so the fade-in transition runs
+      el.classList.add("is-on");
+    }, 1400);
+
+    el.querySelector(".promo-close").addEventListener("click", function () {
+      el.classList.remove("is-on");
+      setTimeout(function () {
+        el.hidden = true;
+      }, 400);
+      try {
+        localStorage.setItem(key, "1");
+      } catch (e) {}
+    });
+  }
+
   function Lightbox() {
     if (typeof GLightbox !== "function") return;
     GLightbox({
@@ -505,6 +533,7 @@
     new Curtain();
     FreeformCollage();
     HeroTags();
+    Promo();
     Lightbox();
 
     this.frames = [new Spotlight(), new Magnet(), new Parallax()];

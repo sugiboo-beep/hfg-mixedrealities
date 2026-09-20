@@ -252,5 +252,13 @@
   "J3057665916957328007953948101798": "Drawing",
   "Q3055928029109639534826503031974": "Figure 1"
  },
- "placeholder": "This section has no content on the source site yet. It is kept in place so the structure stays complete."
+ "placeholder": "This section has no content on the source site yet. It is kept in place so the structure stays complete.",
+ "announcement": {
+  "enabled": true,
+  "id": "events-upcoming",
+  "kicker": "Events",
+  "text": "Current & upcoming events",
+  "href": "events/index.html#upcoming"
+ },
+ "upcoming": []
 }
