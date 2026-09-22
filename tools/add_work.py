@@ -22,54 +22,14 @@ Example:
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
-import re
 import subprocess
 import sys
-import unicodedata
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+from media_tools import ROOT, register_image, slugify, unique_slug
+
 CONTENT = ROOT / "content"
-FULL_DIR = ROOT / "assets" / "img" / "full"
-THUMB_DIR = ROOT / "assets" / "img" / "thumb"
-THUMB_WIDTH = 700
-
-
-def slugify(text: str) -> str:
-    normalized = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
-    slug = re.sub(r"[^a-z0-9]+", "-", normalized.lower()).strip("-")
-    return slug or "work"
-
-
-def unique_slug(base: str, taken: set[str]) -> str:
-    slug = base
-    n = 2
-    while slug in taken:
-        slug = f"{base}-{n}"
-        n += 1
-    return slug
-
-
-def image_dims(path: Path) -> tuple[int, int]:
-    out = subprocess.run(
-        ["sips", "-g", "pixelWidth", "-g", "pixelHeight", str(path)],
-        check=True, capture_output=True, text=True,
-    ).stdout
-    w = int(re.search(r"pixelWidth: (\d+)", out).group(1))
-    h = int(re.search(r"pixelHeight: (\d+)", out).group(1))
-    return w, h
-
-
-def make_thumb(full_path: Path, thumb_path: Path, width: int) -> None:
-    if width > THUMB_WIDTH:
-        subprocess.run(
-            ["sips", "--resampleWidth", str(THUMB_WIDTH), str(full_path), "--out", str(thumb_path)],
-            check=True, capture_output=True, text=True,
-        )
-    else:
-        thumb_path.write_bytes(full_path.read_bytes())
 
 
 def main() -> None:
@@ -108,32 +68,17 @@ def main() -> None:
             sys.exit(f"Unsupported image type: {p.suffix}")
 
     taken_slugs = {w["slug"] for w in site["works"]}
-    slug = args.slug or unique_slug(slugify(args.author), taken_slugs)
+    slug = args.slug or unique_slug(slugify(args.author, "work"), taken_slugs)
     if slug in taken_slugs:
         sys.exit(f"Work slug '{slug}' already exists; pass --slug to override.")
 
     hashes = []
     for i, image_path in enumerate(image_paths):
-        ext = image_path.suffix.lstrip(".").lower()
-        data = image_path.read_bytes()
-        media_hash = hashlib.sha1(data).hexdigest()[:24].upper()
-        if media_hash in media:
-            sys.exit(f"'{image_path.name}' is already registered (duplicate content hash).")
-
-        suffix = "cover" if i == 0 else str(i + 1)
-        filename = f"{slug}-{suffix}.{ext}"
-        if (FULL_DIR / filename).exists():
-            filename = f"{slug}-{suffix}-{media_hash[:6].lower()}.{ext}"
-
-        full_path = FULL_DIR / filename
-        thumb_path = THUMB_DIR / filename
-        full_path.write_bytes(data)
-        width, height = image_dims(full_path)
-        make_thumb(full_path, thumb_path, width)
-
-        media[media_hash] = {"file": filename, "name": image_path.name, "w": width, "h": height, "type": ext}
-        hashes.append(media_hash)
-        print(f"  image: {full_path.relative_to(ROOT)} (thumb: {thumb_path.relative_to(ROOT)})")
+        base_name = f"{slug}-cover" if i == 0 else f"{slug}-{i + 1}"
+        try:
+            hashes.append(register_image(image_path, media, base_name))
+        except ValueError as e:
+            sys.exit(str(e))
 
     blocks = [
         {"kind": "p", "lines": [args.title]},

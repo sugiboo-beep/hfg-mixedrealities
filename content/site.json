@@ -292,10 +292,21 @@
  "placeholder": "This section has no content on the source site yet. It is kept in place so the structure stays complete.",
  "announcement": {
   "enabled": true,
-  "id": "events-upcoming",
+  "id": "aktwechsel-35mm-workshop",
   "kicker": "Events",
   "text": "Current & upcoming events",
   "href": "events/index.html#upcoming"
  },
- "upcoming": []
+ "upcoming": [
+  {
+   "slug": "aktwechsel-35mm-workshop",
+   "title": "Aktwechsel – 35mm Workshop",
+   "date": "Sat 26 Sept 2026, 13:00–17:00",
+   "place": "Kino im Blauen Salon, HfG Karlsruhe",
+   "blurb": "Schnupperkurs zur analogen Filmvorführung: a hands-on introduction to 35mm film projection.",
+   "link": "https://hfg-karlsruhe.de/aktuelles/aktwechsel-35mm-workshop-26092026/",
+   "link_label": "Details and registration",
+   "image": "2B79D685F3DAA7FE174D1710"
+  }
+ ]
 }
