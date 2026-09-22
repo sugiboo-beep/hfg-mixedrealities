@@ -1454,6 +1454,10 @@ a {
     position: absolute;
     width: calc(var(--w) * 1%);
     margin-bottom: 0;
+    /* Dragging is a mouse-only affordance (see FreeformCollage in site.js): below this width the
+       images sit in their curated spot and the page scrolls over them normally. */
+    touch-action: auto;
+    cursor: auto;
   }
 
   .index-row {

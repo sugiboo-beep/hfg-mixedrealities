@@ -340,6 +340,9 @@
       threshold counts as a drag; the images are display-only and open nothing. */
   function FreeformCollage() {
     if (!("PointerEvent" in window)) return;
+    // Mobile keeps the curated layout: dragging is a desktop-only affordance (matches the
+    // .collage-freeform .tile touch-action/cursor reset at the same width in site.css).
+    if (window.innerWidth <= 900) return;
     var containers = document.querySelectorAll(".collage-freeform");
     if (!containers.length) return;
 
