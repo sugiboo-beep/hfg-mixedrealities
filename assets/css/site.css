@@ -1442,22 +1442,26 @@ a {
     break-inside: avoid;
   }
 
-  /* Selected Works keeps its freeform canvas at every width, scaled by the same percentages
-     rather than collapsing into a stacked column like the (non-interactive) project collages. */
+  /* Selected Works: the curated freeform canvas is a wide-screen composition, so on mobile it
+     collapses into one full-width column instead, image after image at natural aspect ratio. */
   .collage-freeform {
-    padding-top: calc(var(--ff-h) * 1%);
+    padding-top: 0;
     columns: initial;
     column-gap: 0;
   }
 
   .collage-freeform .tile {
-    position: absolute;
-    width: calc(var(--w) * 1%);
-    margin-bottom: 0;
+    position: static;
+    width: 100%;
+    margin-bottom: 1.5rem;
     /* Dragging is a mouse-only affordance (see FreeformCollage in site.js): below this width the
-       images sit in their curated spot and the page scrolls over them normally. */
+       images stack in reading order and the page scrolls over them normally. */
     touch-action: auto;
     cursor: auto;
+  }
+
+  .collage-freeform .tile:last-child {
+    margin-bottom: 0;
   }
 
   .index-row {
